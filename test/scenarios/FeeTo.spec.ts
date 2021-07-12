@@ -70,9 +70,9 @@ describe('scenario:FeeTo', () => {
     const tokens: Contract[] = []
     beforeEach('make test tokens', async () => {
       const { timestamp: now } = await provider.getBlock('latest')
-      const token0 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero, now + 60 * 60])
+      const token0 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero])
       tokens.push(token0)
-      const token1 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero, now + 60 * 60])
+      const token1 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero])
       tokens.push(token1)
     })
 
