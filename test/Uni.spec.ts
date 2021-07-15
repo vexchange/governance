@@ -104,13 +104,9 @@ describe('Uni', () => {
     await expect(uni.connect(other1).mint(other1.address, 1)).to.be.revertedWith('Uni::mint: only the minter can mint')
     await expect(uni.mint('0x0000000000000000000000000000000000000000', 1)).to.be.revertedWith('Uni::mint: cannot transfer to the zero address')
 
-    // can mint up to 2%
-    const mintCap = BigNumber.from(await uni.mintCap())
-    const amount = supply.mul(mintCap).div(100)
+    // Can mint a given amount
+    const amount = supply.mul(3).div(100)
     await uni.mint(wallet.address, amount)
     expect(await uni.balanceOf(wallet.address)).to.be.eq(supply.add(amount))
-
-    // cannot mint 2.01%
-    await expect(uni.mint(wallet.address, supply.mul(mintCap.add(1)))).to.be.revertedWith('Uni::mint: exceeded mint cap')
   })
 })

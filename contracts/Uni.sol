@@ -19,10 +19,6 @@ contract Uni {
     /// @notice Address which may mint new tokens
     address public minter;
 
-    /// @notice Cap on the percentage of totalSupply that can be minted at each mint
-    /// TODO: Need to think and decide on whether to keep this or not  
-    uint8 public constant mintCap = 2;
-
     /// @notice Allowance amounts on behalf of others
     mapping (address => mapping (address => uint96)) internal allowances;
 
@@ -104,7 +100,6 @@ contract Uni {
 
         // mint the amount
         uint96 amount = safe96(rawAmount, "Uni::mint: amount exceeds 96 bits");
-        require(amount <= SafeMath.div(SafeMath.mul(totalSupply, mintCap), 100), "Uni::mint: exceeded mint cap");
         totalSupply = safe96(SafeMath.add(totalSupply, amount), "Uni::mint: totalSupply exceeds 96 bits");
 
         // transfer the amount to the recipient
