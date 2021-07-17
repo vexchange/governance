@@ -21,9 +21,8 @@ export async function governanceFixture(
   provider: providers.Web3Provider
 ): Promise<GovernanceFixture> {
   // deploy UNI, sending the total supply to the deployer
-  const { timestamp: now } = await provider.getBlock('latest')
   const timelockAddress = Contract.getContractAddress({ from: wallet.address, nonce: 1 })
-  const uni = await deployContract(wallet, Uni, [wallet.address, timelockAddress, now + 60 * 60])
+  const uni = await deployContract(wallet, Uni, [wallet.address, timelockAddress])
 
   // deploy timelock, controlled by what will be the governor
   const governorAlphaAddress = Contract.getContractAddress({ from: wallet.address, nonce: 2 })
