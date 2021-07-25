@@ -115,11 +115,10 @@ contract Uni {
      * @param rawAmount The number of tokens to be minted
      */
     function burn(uint rawAmount) external {
-        uint96 amount = safe96(rawAmount, "Vexchange::approve: amount exceeds 96 bits");
-        require(amount <= balances[msg.sender], "Vexchange::burn token balance is less than the burn amount");
+        uint96 amount = safe96(rawAmount, "Vexchange::burn amount exceeds 96 bits");
 
         balances[msg.sender] = sub96(balances[msg.sender], amount, "Vexchange::burn new balance underflows");
-        totalSupply = safe96(SafeMath.sub(totalSupply, amount), "Vexchange::burn new supply exceeds 96 bits");
+        totalSupply = SafeMath.sub(totalSupply, amount);
 
         emit Transfer(msg.sender, address(0), amount);
 

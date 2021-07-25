@@ -115,10 +115,10 @@ describe('Uni', () => {
     let supply = await uni.totalSupply();
     
     // Cannot burn more than uint96 limit 
-    await expect(uni.burn("79228162514264337593543950337")).to.be.revertedWith("Vexchange::approve: amount exceeds 96 bits");
+    await expect(uni.burn("79228162514264337593543950337")).to.be.revertedWith("Vexchange::burn amount exceeds 96 bits");
 
     // Cannot burn more than what the wallet owns
-    await expect(uni.burn(supply + 1)).to.be.revertedWith("Vexchange::burn token balance is less than the burn amount");
+    await expect(uni.burn(supply + 1)).to.be.revertedWith("Vexchange::burn new balance underflows");
 
     // Can burn a given amount 
     const amountToBurn = expandTo18Decimals(1000);
