@@ -111,6 +111,22 @@ contract Uni {
     }
 
     /**
+     * @notice Burns tokens
+     * @param rawAmount The number of tokens to be burnt
+     */
+    function burn(uint rawAmount) external {
+        uint96 amount = safe96(rawAmount, "Vexchange::burn amount exceeds 96 bits");
+
+        balances[msg.sender] = sub96(balances[msg.sender], amount, "Vexchange::burn new balance underflows");
+        totalSupply = SafeMath.sub(totalSupply, amount);
+
+        emit Transfer(msg.sender, address(0), amount);
+
+        // move the votes to the zero address
+        _moveDelegates(delegates[msg.sender], address(0), amount);
+    }
+
+    /**
      * @notice Get the number of tokens `spender` is approved to spend on behalf of `account`
      * @param account The address of the account holding the funds
      * @param spender The address of the account spending the funds

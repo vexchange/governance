@@ -109,4 +109,29 @@ describe('Uni', () => {
     await uni.mint(wallet.address, amount)
     expect(await uni.balanceOf(wallet.address)).to.be.eq(supply.add(amount))
   })
+
+  it('burn', async () => {
+    const uni = await deployContract(wallet, Uni, [wallet.address, wallet.address])
+    let supply = await uni.totalSupply();
+    
+    // Cannot burn more than uint96 limit 
+    await expect(uni.burn("79228162514264337593543950337")).to.be.revertedWith("Vexchange::burn amount exceeds 96 bits");
+
+    // Cannot burn more than what the wallet owns
+    await expect(uni.burn(supply + 1)).to.be.revertedWith("Vexchange::burn new balance underflows");
+
+    // Can burn a given amount 
+    const amountToBurn = expandTo18Decimals(1000);
+    await uni.burn(amountToBurn);
+    expect(await uni.balanceOf(wallet.address)).to.eq(supply.sub(amountToBurn));
+    expect(await uni.totalSupply()).to.eq(supply.sub(amountToBurn));
+
+    supply = await uni.totalSupply();
+
+    // Burn 0 tokens
+    const zeroAmount = 0;
+    await uni.burn(zeroAmount);
+    expect(await uni.balanceOf(wallet.address)).to.eq(supply);
+    expect(await uni.totalSupply()).to.eq(supply);
+  });
 })
