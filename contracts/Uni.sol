@@ -112,7 +112,7 @@ contract Uni {
 
     /**
      * @notice Burns tokens
-     * @param rawAmount The number of tokens to be minted
+     * @param rawAmount The number of tokens to be burnt
      */
     function burn(uint rawAmount) external {
         uint96 amount = safe96(rawAmount, "Vexchange::burn amount exceeds 96 bits");
