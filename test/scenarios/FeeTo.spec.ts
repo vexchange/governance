@@ -53,7 +53,7 @@ describe('scenario:FeeTo', () => {
     ])
 
     // Note: This is modified to use the transferOwnership function
-    // of the Ownable class, instead of the setFeeToSetter of the 
+    // of the Ownable class, instead of the setFeeToSetter of the
     // original uniswap contract because we moved the function
     // of setting the platformFeeTo to the owner instead
     await factory.transferOwnership(feeToSetter.address)

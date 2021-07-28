@@ -33,7 +33,7 @@ describe('scenario:setFeeTo', () => {
   let factory: Contract
   beforeEach('deploy vexchange v2', async () => {
     factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address])
-    await factory.transferOwnership(timelock.address);
+    await factory.transferOwnership(timelock.address)
   })
 
   it('setFeeTo', async () => {

@@ -74,9 +74,13 @@ describe('scenario:FeeToSetter', () => {
   })
 
   it('setDefaultPlatformFee:fail', async () => {
-    await expect(feeToSetter.setDefaultPlatformFee(30)).to.be.revertedWith('FeeToSetter::setDefaultPlatformFee: not time yet')
+    await expect(feeToSetter.setDefaultPlatformFee(30)).to.be.revertedWith(
+      'FeeToSetter::setDefaultPlatformFee: not time yet'
+    )
     await mineBlock(provider, vestingEnd)
-    await expect(feeToSetter.connect(other).setDefaultPlatformFee(30)).to.be.revertedWith('FeeToSetter::setDefaultPlatformFee: not allowed')
+    await expect(feeToSetter.connect(other).setDefaultPlatformFee(30)).to.be.revertedWith(
+      'FeeToSetter::setDefaultPlatformFee: not allowed'
+    )
   })
 
   it('setDefaultPlatformFee', async () => {
