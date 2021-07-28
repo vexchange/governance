@@ -5,7 +5,7 @@ import "./SafeMath.sol";
 contract TreasuryVester {
     using SafeMath for uint;
 
-    address public uni;
+    address public vex;
     address public recipient;
 
     uint public vestingAmount;
@@ -16,7 +16,7 @@ contract TreasuryVester {
     uint public lastUpdate;
 
     constructor(
-        address uni_,
+        address vex_,
         address recipient_,
         uint vestingAmount_,
         uint vestingBegin_,
@@ -27,7 +27,7 @@ contract TreasuryVester {
         require(vestingCliff_ >= vestingBegin_, 'TreasuryVester::constructor: cliff is too early');
         require(vestingEnd_ > vestingCliff_, 'TreasuryVester::constructor: end is too early');
 
-        uni = uni_;
+        vex = vex_;
         recipient = recipient_;
 
         vestingAmount = vestingAmount_;
@@ -47,16 +47,16 @@ contract TreasuryVester {
         require(block.timestamp >= vestingCliff, 'TreasuryVester::claim: not time yet');
         uint amount;
         if (block.timestamp >= vestingEnd) {
-            amount = IUni(uni).balanceOf(address(this));
+            amount = IVex(vex).balanceOf(address(this));
         } else {
             amount = vestingAmount.mul(block.timestamp - lastUpdate).div(vestingEnd - vestingBegin);
             lastUpdate = block.timestamp;
         }
-        IUni(uni).transfer(recipient, amount);
+        IVex(vex).transfer(recipient, amount);
     }
 }
 
-interface IUni {
+interface IVex {
     function balanceOf(address account) external view returns (uint);
     function transfer(address dst, uint rawAmount) external returns (bool);
 }

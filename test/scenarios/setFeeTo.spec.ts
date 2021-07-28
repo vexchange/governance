@@ -2,7 +2,7 @@ import chai, { expect } from 'chai'
 import { Contract, BigNumber, utils } from 'ethers'
 import { solidity, MockProvider, createFixtureLoader, deployContract } from 'ethereum-waffle'
 
-import UniswapV2Factory from '@uniswap/v2-core/build/UniswapV2Factory.json'
+import VexchangeV2Factory from '../VexchangeV2/VexchangeV2Factory.json'
 
 import { governanceFixture } from '../fixtures'
 import { mineBlock, DELAY } from '../utils'
@@ -20,30 +20,32 @@ describe('scenario:setFeeTo', () => {
   const [wallet] = provider.getWallets()
   const loadFixture = createFixtureLoader([wallet], provider)
 
-  let uni: Contract
+  let vex: Contract
   let timelock: Contract
   let governorAlpha: Contract
   beforeEach(async () => {
     const fixture = await loadFixture(governanceFixture)
-    uni = fixture.uni
+    vex = fixture.vex
     timelock = fixture.timelock
     governorAlpha = fixture.governorAlpha
   })
 
   let factory: Contract
-  beforeEach('deploy uniswap v2', async () => {
-    factory = await deployContract(wallet, UniswapV2Factory, [timelock.address])
+  beforeEach('deploy vexchange v2', async () => {
+    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address])
+    await factory.transferOwnership(timelock.address);
   })
 
   it('setFeeTo', async () => {
     const target = factory.address
     const value = 0
-    const signature = 'setFeeTo(address)'
+
+    const signature = 'setPlatformFeeTo(address)'
     const calldata = utils.defaultAbiCoder.encode(['address'], [timelock.address])
-    const description = 'Set feeTo on the UniswapV2Factory to the timelock address.'
+    const description = 'Set platformFeeTo on the VexchangeV2Factory to the timelock address.'
 
     // activate balances
-    await uni.delegate(wallet.address)
+    await vex.delegate(wallet.address)
     const { timestamp: now } = await provider.getBlock('latest')
     await mineBlock(provider, now)
 
@@ -65,9 +67,11 @@ describe('scenario:setFeeTo', () => {
     const eta = now + DELAY + 60 // give a minute margin
     await mineBlock(provider, eta)
 
-    await governorAlpha.execute(proposalId)
+    // Keeps getting reverted here
+    // Timelock::executeTransaction: Transaction execution reverted
+    await governorAlpha.execute(proposalId, { gasLimit: 9999999 })
 
-    const feeTo = await factory.feeTo()
+    const feeTo = await factory.platformFeeTo()
     expect(feeTo).to.be.eq(timelock.address)
   }).timeout(500000)
 })

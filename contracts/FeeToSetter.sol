@@ -24,21 +24,29 @@ contract FeeToSetter {
     }
 
     // allows owner to change feeToSetter after vesting
-    function setFeeToSetter(address feeToSetter_) public {
-        require(block.timestamp >= vestingEnd, 'FeeToSetter::setFeeToSetter: not time yet');
-        require(msg.sender == owner, 'FeeToSetter::setFeeToSetter: not allowed');
-        IUniswapV2Factory(factory).setFeeToSetter(feeToSetter_);
+    function setFactoryOwner(address feeToSetter_) public {
+        require(block.timestamp >= vestingEnd, 'FeeToSetter::setFactoryOwner: not time yet');
+        require(msg.sender == owner, 'FeeToSetter::setFactoryOwner: not allowed');
+        IVexchangeV2Factory(factory).transferOwnership(feeToSetter_);
     }
 
-    // allows owner to turn fees on/off after vesting
-    function toggleFees(bool on) public {
-        require(block.timestamp >= vestingEnd, 'FeeToSetter::toggleFees: not time yet');
-        require(msg.sender == owner, 'FeeToSetter::toggleFees: not allowed');
-        IUniswapV2Factory(factory).setFeeTo(on ? feeTo : address(0));
+    // allows owner to adjust fees after vesting
+    function setDefaultPlatformFee(uint platformFee_) public {
+        require(block.timestamp >= vestingEnd, 'FeeToSetter::setDefaultPlatformFee: not time yet');
+        require(msg.sender == owner, 'FeeToSetter::setDefaultPlatformFee: not allowed');
+
+        IVexchangeV2Factory(factory).setDefaultPlatformFee(platformFee_); 
+    }
+
+    function setPlatformFeeTo() public {
+        require(block.timestamp >= vestingEnd, 'FeeToSetter::setPlatformFeeTo: not time yet');
+        require(msg.sender == owner, 'FeeToSetter::setPlatformFeeTo: not allowed');
+        IVexchangeV2Factory(factory).setPlatformFeeTo(feeTo);   
     }
 }
 
-interface IUniswapV2Factory {
-    function setFeeToSetter(address) external;
-    function setFeeTo(address) external;
+interface IVexchangeV2Factory {
+    function transferOwnership(address) external;
+    function setPlatformFeeTo(address) external;
+    function setDefaultPlatformFee(uint) external;
 }

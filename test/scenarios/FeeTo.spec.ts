@@ -2,11 +2,11 @@ import chai, { expect } from 'chai'
 import { Contract, constants } from 'ethers'
 import { solidity, MockProvider, createFixtureLoader, deployContract } from 'ethereum-waffle'
 
-import UniswapV2Factory from '@uniswap/v2-core/build/UniswapV2Factory.json'
-import UniswapV2Pair from '@uniswap/v2-core/build/UniswapV2Pair.json'
+import VexchangeV2Factory from '../VexchangeV2/VexchangeV2Factory.json'
+import VexchangeV2Pair from '../VexchangeV2/VexchangeV2Pair.json'
 import FeeToSetter from '../../build/FeeToSetter.json'
 import FeeTo from '../../build/FeeTo.json'
-import Uni from '../../build/Uni.json'
+import Vex from '../../build/VEX.json'
 
 import { governanceFixture } from '../fixtures'
 import { mineBlock, expandTo18Decimals } from '../utils'
@@ -29,8 +29,8 @@ describe('scenario:FeeTo', () => {
   })
 
   let factory: Contract
-  beforeEach('deploy uniswap v2', async () => {
-    factory = await deployContract(wallet, UniswapV2Factory, [wallet.address])
+  beforeEach('deploy vexchange v2', async () => {
+    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address])
   })
 
   let feeToSetter: Contract
@@ -52,10 +52,13 @@ describe('scenario:FeeTo', () => {
       feeTo.address,
     ])
 
-    // set feeToSetter to be the vesting contract
-    await factory.setFeeToSetter(feeToSetter.address)
-
+    // Note: This is modified to use the transferOwnership function
+    // of the Ownable class, instead of the setFeeToSetter of the 
+    // original uniswap contract because we moved the function
+    // of setting the platformFeeTo to the owner instead
+    await factory.transferOwnership(feeToSetter.address)
     await mineBlock(provider, vestingEnd)
+    await feeToSetter.setPlatformFeeTo()
   })
 
   it('permissions', async () => {
@@ -70,21 +73,21 @@ describe('scenario:FeeTo', () => {
     const tokens: Contract[] = []
     beforeEach('make test tokens', async () => {
       const { timestamp: now } = await provider.getBlock('latest')
-      const token0 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero])
+      const token0 = await deployContract(wallet, Vex, [wallet.address, constants.AddressZero])
       tokens.push(token0)
-      const token1 = await deployContract(wallet, Uni, [wallet.address, constants.AddressZero])
+      const token1 = await deployContract(wallet, Vex, [wallet.address, constants.AddressZero])
       tokens.push(token1)
     })
 
     let pair: Contract
     beforeEach('create fee liquidity', async () => {
       // turn the fee on
-      await feeToSetter.toggleFees(true)
+      await feeToSetter.setDefaultPlatformFee(1667)
 
       // create the pair
       await factory.createPair(tokens[0].address, tokens[1].address)
       const pairAddress = await factory.getPair(tokens[0].address, tokens[1].address)
-      pair = new Contract(pairAddress, UniswapV2Pair.abi).connect(wallet)
+      pair = new Contract(pairAddress, VexchangeV2Pair.abi).connect(wallet)
 
       // add liquidity
       await tokens[0].transfer(pair.address, expandTo18Decimals(1))

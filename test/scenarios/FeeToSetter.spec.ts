@@ -2,7 +2,7 @@ import chai, { expect } from 'chai'
 import { Contract, constants } from 'ethers'
 import { solidity, MockProvider, createFixtureLoader, deployContract } from 'ethereum-waffle'
 
-import UniswapV2Factory from '@uniswap/v2-core/build/UniswapV2Factory.json'
+import VexchangeV2Factory from '../VexchangeV2/VexchangeV2Factory.json'
 import FeeToSetter from '../../build/FeeToSetter.json'
 
 import { governanceFixture } from '../fixtures'
@@ -26,8 +26,8 @@ describe('scenario:FeeToSetter', () => {
   })
 
   let factory: Contract
-  beforeEach('deploy uniswap v2', async () => {
-    factory = await deployContract(wallet, UniswapV2Factory, [wallet.address])
+  beforeEach('deploy vexchange v2', async () => {
+    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address])
   })
 
   let feeToSetter: Contract
@@ -45,7 +45,7 @@ describe('scenario:FeeToSetter', () => {
     ])
 
     // set feeToSetter to be the vesting contract
-    await factory.setFeeToSetter(feeToSetter.address)
+    await factory.transferOwnership(feeToSetter.address)
   })
 
   it('setOwner:fail', async () => {
@@ -58,39 +58,32 @@ describe('scenario:FeeToSetter', () => {
     await feeToSetter.setOwner(other.address)
   })
 
-  it('setFeeToSetter:fail', async () => {
-    await expect(feeToSetter.setFeeToSetter(other.address)).to.be.revertedWith(
-      'FeeToSetter::setFeeToSetter: not time yet'
+  it('setFactoryOwner:fail', async () => {
+    await expect(feeToSetter.setFactoryOwner(other.address)).to.be.revertedWith(
+      'FeeToSetter::setFactoryOwner: not time yet'
     )
     await mineBlock(provider, vestingEnd)
-    await expect(feeToSetter.connect(other).setFeeToSetter(other.address)).to.be.revertedWith(
-      'FeeToSetter::setFeeToSetter: not allowed'
+    await expect(feeToSetter.connect(other).setFactoryOwner(other.address)).to.be.revertedWith(
+      'FeeToSetter::setFactoryOwner: not allowed'
     )
   })
 
-  it('setFeeToSetter', async () => {
+  it('setFactoryOwner', async () => {
     await mineBlock(provider, vestingEnd)
-    await feeToSetter.setFeeToSetter(other.address)
+    await feeToSetter.setFactoryOwner(other.address)
   })
 
-  it('toggleFees:fail', async () => {
-    await expect(feeToSetter.toggleFees(true)).to.be.revertedWith('FeeToSetter::toggleFees: not time yet')
+  it('setDefaultPlatformFee:fail', async () => {
+    await expect(feeToSetter.setDefaultPlatformFee(30)).to.be.revertedWith('FeeToSetter::setDefaultPlatformFee: not time yet')
     await mineBlock(provider, vestingEnd)
-    await expect(feeToSetter.connect(other).toggleFees(true)).to.be.revertedWith('FeeToSetter::toggleFees: not allowed')
+    await expect(feeToSetter.connect(other).setDefaultPlatformFee(30)).to.be.revertedWith('FeeToSetter::setDefaultPlatformFee: not allowed')
   })
 
-  it('toggleFees', async () => {
-    let feeTo = await factory.feeTo()
-    expect(feeTo).to.be.eq(constants.AddressZero)
-
+  it('setDefaultPlatformFee', async () => {
     await mineBlock(provider, vestingEnd)
 
-    await feeToSetter.toggleFees(true)
-    feeTo = await factory.feeTo()
-    expect(feeTo).to.be.eq(other.address)
-
-    await feeToSetter.toggleFees(false)
-    feeTo = await factory.feeTo()
-    expect(feeTo).to.be.eq(constants.AddressZero)
+    await feeToSetter.setDefaultPlatformFee(30)
+    const platformFee = await factory.defaultPlatformFee()
+    expect(platformFee).to.be.eq(30)
   })
 })
