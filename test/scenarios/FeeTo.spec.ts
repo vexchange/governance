@@ -18,7 +18,7 @@ describe('scenario:FeeTo', () => {
     ganacheOptions: {
       hardfork: 'istanbul',
       mnemonic: 'horn horn horn horn horn horn horn horn horn horn horn horn',
-      gasLimit: 99999999,
+      gasLimit: 9999999,
     },
   })
   const [wallet, other] = provider.getWallets()
@@ -30,7 +30,7 @@ describe('scenario:FeeTo', () => {
 
   let factory: Contract
   beforeEach('deploy vexchange v2', async () => {
-    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address])
+    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address], { gasLimit: 9999999})
   })
 
   let feeToSetter: Contract
