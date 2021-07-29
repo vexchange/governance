@@ -5,7 +5,8 @@
   "author": "Noah Zinsmeister",
   "license": "MIT",
   "files": [
-    "build"
+    "build",
+    "contracts/*.sol"
   ],
   "scripts": {
     "precompile": "rimraf ./build/",
