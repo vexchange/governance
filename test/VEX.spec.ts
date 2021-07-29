@@ -102,7 +102,9 @@ describe('VEX', () => {
     const supply = await vex.totalSupply()
 
     await expect(vex.connect(other1).mint(other1.address, 1)).to.be.revertedWith('VEX::mint: only the minter can mint')
-    await expect(vex.mint('0x0000000000000000000000000000000000000000', 1)).to.be.revertedWith('VEX::mint: cannot transfer to the zero address')
+    await expect(vex.mint('0x0000000000000000000000000000000000000000', 1)).to.be.revertedWith(
+      'VEX::mint: cannot transfer to the zero address'
+    )
 
     // Can mint a given amount
     const amount = supply.mul(3).div(100)
@@ -112,26 +114,26 @@ describe('VEX', () => {
 
   it('burn', async () => {
     const vex = await deployContract(wallet, Vex, [wallet.address, wallet.address])
-    let supply = await vex.totalSupply();
-    
-    // Cannot burn more than uint96 limit 
-    await expect(vex.burn("79228162514264337593543950337")).to.be.revertedWith("VEX::burn amount exceeds 96 bits");
+    let supply = await vex.totalSupply()
+
+    // Cannot burn more than uint96 limit
+    await expect(vex.burn('79228162514264337593543950337')).to.be.revertedWith('VEX::burn amount exceeds 96 bits')
 
     // Cannot burn more than what the wallet owns
-    await expect(vex.burn(supply + 1)).to.be.revertedWith("VEX::burn new balance underflows");
+    await expect(vex.burn(supply + 1)).to.be.revertedWith('VEX::burn new balance underflows')
 
-    // Can burn a given amount 
-    const amountToBurn = expandTo18Decimals(1000);
-    await vex.burn(amountToBurn);
-    expect(await vex.balanceOf(wallet.address)).to.eq(supply.sub(amountToBurn));
-    expect(await vex.totalSupply()).to.eq(supply.sub(amountToBurn));
+    // Can burn a given amount
+    const amountToBurn = expandTo18Decimals(1000)
+    await vex.burn(amountToBurn)
+    expect(await vex.balanceOf(wallet.address)).to.eq(supply.sub(amountToBurn))
+    expect(await vex.totalSupply()).to.eq(supply.sub(amountToBurn))
 
-    supply = await vex.totalSupply();
+    supply = await vex.totalSupply()
 
     // Burn 0 tokens
-    const zeroAmount = 0;
-    await vex.burn(zeroAmount);
-    expect(await vex.balanceOf(wallet.address)).to.eq(supply);
-    expect(await vex.totalSupply()).to.eq(supply);
-  });
+    const zeroAmount = 0
+    await vex.burn(zeroAmount)
+    expect(await vex.balanceOf(wallet.address)).to.eq(supply)
+    expect(await vex.totalSupply()).to.eq(supply)
+  })
 })

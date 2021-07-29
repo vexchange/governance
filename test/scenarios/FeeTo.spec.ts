@@ -30,7 +30,9 @@ describe('scenario:FeeTo', () => {
 
   let factory: Contract
   beforeEach('deploy vexchange v2', async () => {
-    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address], { gasLimit: 99999999 })
+    factory = await deployContract(wallet, VexchangeV2Factory, [30, 1667, wallet.address, wallet.address], {
+      gasLimit: 99999999,
+    })
   })
 
   let feeToSetter: Contract
