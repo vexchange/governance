@@ -1,15 +1,29 @@
 pragma solidity ^0.5.16;
 pragma experimental ABIEncoderV2;
 
+interface TimelockInterface {
+    function delay() external view returns (uint);
+    function GRACE_PERIOD() external view returns (uint);
+    function acceptAdmin() external;
+    function queuedTransactions(bytes32 hash) external view returns (bool);
+    function queueTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external returns (bytes32);
+    function cancelTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external;
+    function executeTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external payable returns (bytes memory);
+}
+
+interface VexInterface {
+    function getPriorVotes(address account, uint blockNumber) external view returns (uint96);
+}
+
 contract GovernorAlpha {
     /// @notice The name of this contract
     string public constant name = "Vexchange Governor Alpha";
 
     /// @notice The number of votes in support of a proposal required in order for a quorum to be reached and for a vote to succeed
-    function quorumVotes() public pure returns (uint) { return 40_000_000e18; } // 4% of vex
+    function quorumVotes() public pure returns (uint) { return 40_000_000e18; } // 4% of Vex
 
     /// @notice The number of votes required in order for a voter to become a proposer
-    function proposalThreshold() public pure returns (uint) { return 10_000_000e18; } // 1% of vex
+    function proposalThreshold() public pure returns (uint) { return 10_000_000e18; } // 1% of Vex
 
     /// @notice The maximum number of actions that can be included in a proposal
     function proposalMaxOperations() public pure returns (uint) { return 10; } // 10 actions
@@ -290,18 +304,4 @@ contract GovernorAlpha {
         assembly { chainId := chainid() }
         return chainId;
     }
-}
-
-interface TimelockInterface {
-    function delay() external view returns (uint);
-    function GRACE_PERIOD() external view returns (uint);
-    function acceptAdmin() external;
-    function queuedTransactions(bytes32 hash) external view returns (bool);
-    function queueTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external returns (bytes32);
-    function cancelTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external;
-    function executeTransaction(address target, uint value, string calldata signature, bytes calldata data, uint eta) external payable returns (bytes memory);
-}
-
-interface VexInterface {
-    function getPriorVotes(address account, uint blockNumber) external view returns (uint96);
 }

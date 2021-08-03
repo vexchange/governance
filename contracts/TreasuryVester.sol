@@ -2,6 +2,11 @@ pragma solidity ^0.5.16;
 
 import "./SafeMath.sol";
 
+interface IVex {
+    function balanceOf(address account) external view returns (uint);
+    function transfer(address dst, uint rawAmount) external returns (bool);
+}
+
 contract TreasuryVester {
     using SafeMath for uint;
 
@@ -54,9 +59,4 @@ contract TreasuryVester {
         }
         IVex(vex).transfer(recipient, amount);
     }
-}
-
-interface IVex {
-    function balanceOf(address account) external view returns (uint);
-    function transfer(address dst, uint rawAmount) external returns (bool);
 }
