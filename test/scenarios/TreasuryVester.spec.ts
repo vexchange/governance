@@ -20,11 +20,11 @@ describe('scenario:TreasuryVester', () => {
   const [wallet] = provider.getWallets()
   const loadFixture = createFixtureLoader([wallet], provider)
 
-  let uni: Contract
+  let vex: Contract
   let timelock: Contract
   beforeEach(async () => {
     const fixture = await loadFixture(governanceFixture)
-    uni = fixture.uni
+    vex = fixture.vex
     timelock = fixture.timelock
   })
 
@@ -40,7 +40,7 @@ describe('scenario:TreasuryVester', () => {
     vestingCliff = vestingBegin + 60
     vestingEnd = vestingBegin + 60 * 60 * 24 * 365
     treasuryVester = await deployContract(wallet, TreasuryVester, [
-      uni.address,
+      vex.address,
       timelock.address,
       vestingAmount,
       vestingBegin,
@@ -49,7 +49,7 @@ describe('scenario:TreasuryVester', () => {
     ])
 
     // fund the treasury
-    await uni.transfer(treasuryVester.address, vestingAmount)
+    await vex.transfer(treasuryVester.address, vestingAmount)
   })
 
   it('setRecipient:fail', async () => {
@@ -67,14 +67,14 @@ describe('scenario:TreasuryVester', () => {
   it('claim:~half', async () => {
     await mineBlock(provider, vestingBegin + Math.floor((vestingEnd - vestingBegin) / 2))
     await treasuryVester.claim()
-    const balance = await uni.balanceOf(timelock.address)
+    const balance = await vex.balanceOf(timelock.address)
     expect(vestingAmount.div(2).sub(balance).abs().lte(vestingAmount.div(2).div(10000))).to.be.true
   })
 
   it('claim:all', async () => {
     await mineBlock(provider, vestingEnd)
     await treasuryVester.claim()
-    const balance = await uni.balanceOf(timelock.address)
+    const balance = await vex.balanceOf(timelock.address)
     expect(balance).to.be.eq(vestingAmount)
   })
 })
