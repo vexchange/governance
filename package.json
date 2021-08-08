@@ -14,19 +14,24 @@
     "pretest": "yarn compile",
     "test": "mocha",
     "lint": "prettier ./test/**/*.ts --check",
-    "prepublishOnly": "yarn test"
+    "prepublishOnly": "yarn test",
+    "deployGovernance": "node scripts/deployGovernance.js",
+    "deployVester": "node scripts/deployVester.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
     "chai": "^4.2.0",
+    "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.1.0",
     "ethereumjs-util": "^7.0.4",
     "mocha": "^8.1.3",
     "prettier": "^2.1.1",
     "rimraf": "^3.0.2",
     "solc": "0.5.16",
+    "thorify": "1.5.3",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.2"
+    "typescript": "^4.0.2",
+    "web3": "1.3.5"
   }
 }
