@@ -16,7 +16,7 @@
     "lint": "prettier ./test/**/*.ts --check",
     "prepublishOnly": "yarn test",
     "deployGovernance": "node scripts/deployGovernance.js",
-    "deployVester": "node scripts/deployVester.js"
+    "changeAdminAndAcceptAdmin": "node scripts/timelockChangeAdminAndGovernorAcceptAdmin.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",

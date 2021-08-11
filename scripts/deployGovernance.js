@@ -5,6 +5,8 @@ const Web3 = require("web3");
 const Vex = require(config.pathToVEXJson);
 const Timelock = require(config.pathToTimelockJson);
 const GovernorAlpha = require(config.pathToGovernorAlphaJson);
+const assert = require('assert');
+const fs = require('fs');
 
 let rpcUrl = null;
 if (process.argv.length < 3) 
@@ -78,8 +80,6 @@ deployGovernance = async() =>
         vexContract.options.address = vexAddress;
 
         console.log("\n==============================================================================\n");
-
-        // Deploy governor
         console.log("Attempting to deploy contract:", config.pathToGovernorAlphaJson);
 
         const governorAlphaContract = new web3.eth.Contract(GovernorAlpha.abi);
@@ -96,10 +96,53 @@ deployGovernance = async() =>
         console.log("Contract Successfully deployed at address:", transactionReceipt.contractAddress);
 
         const governorAlphaAddress = transactionReceipt.contractAddress;
+        governorAlphaContract.options.address = governorAlphaAddress;
+        
+        console.log("\n==============================================================================\n");
+        console.log("Nominating GovernorAlpha to be the pendingAdmin of Timelock");
 
-        console.log(governorAlphaAddress);
-        console.log(typeof governorAlphaAddress);
-        console.log(governorAlphaAddress.length);
+        const blockNumber = await web3.eth.getBlockNumber();
+        const timestamp = (await web3.eth.getBlock(blockNumber)).timestamp;
+
+        const value = 0;
+        const signature = "setPendingAdmin(address)";
+        const data = web3.eth.abi.encodeParameter('address', governorAlphaAddress);
+
+        // Add some buffer to the delay 
+        const eta = parseInt(timestamp + config.timelockDelay * 1.05);
+
+        await timelockContract.methods
+            .queueTransaction(timelockAddress, value, 
+                signature, data, eta)
+            .send({ from: walletAddress })
+            .on("receipt", (receipt) => {
+                transactionReceipt = receipt;
+            });
+
+        const transactionHashQueued = transactionReceipt.outputs[0].events[0].topics[1];
+        console.log("Transaction Hash of queued proposal:", transactionHashQueued);
+        
+        // Ensure that transaction is indeed queued
+        assert(await timelockContract.methods
+                        .queuedTransactions(transactionHashQueued)
+                        .call());
+
+        console.log("Transaction successfully queued. Call executeTransaction with target=", 
+                    timelockAddress,
+                    "value=", value, "signature=", signature,
+                    "data=", data,
+                    "eta=", eta,
+                    "after the eta");
+
+        const output = {
+            timelockAddress: timelockAddress,
+            governorAlphaAddress: governorAlphaAddress,
+            signature: signature,
+            value: value,
+            data: data,
+            eta: eta,
+        }
+        fs.writeFileSync('./scripts/changeAdminConfig.json', JSON.stringify(output, null, 2));
     } 
     catch(error)
     {

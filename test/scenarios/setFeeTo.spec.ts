@@ -69,8 +69,6 @@ describe('scenario:setFeeTo', () => {
     const eta = now + DELAY + 60 // give a minute margin
     await mineBlock(provider, eta)
 
-    // Keeps getting reverted here
-    // Timelock::executeTransaction: Transaction execution reverted
     await governorAlpha.execute(proposalId, { gasLimit: 9999999 })
 
     const feeTo = await factory.platformFeeTo()
