@@ -28,10 +28,34 @@ const web3 = thorify(new Web3(), rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
+
+renounceMastership = async(contractAddress) => {
+    console.log("Renouncing Mastership");
+
+    const SET_MASTER_SELECTOR = web3.eth.abi.encodeFunctionSignature("setMaster(address,address)");
+
+    // This address is the same for both mainnet and testnet
+    const PROTOTYPE_CONTRACT_ADDRESS = "0x000000000000000000000050726f746f74797065";
+
+    const data = web3.eth.abi.encodeParameters(
+       ["address", "address"],
+       [contractAddress, "0x0000000000000000000000000000000000000000"],
+    ).slice(2); // slicing to get rid of the '0x' in the beginning
+
+    await web3.eth.sendTransaction({
+        to: PROTOTYPE_CONTRACT_ADDRESS,
+        data: SET_MASTER_SELECTOR + data,
+        from: web3.eth.accounts.wallet[0].address
+    }).on("receipt", (receipt) => {
+        console.log("Mastership successfully renounced, txid: ", receipt.transactionHash);
+    });
+}
+
+
 deployGovernance = async() =>
 {
     // This is the address associated with the private key
-    const walletAddress = web3.eth.accounts.wallet[0].address
+    const walletAddress = web3.eth.accounts.wallet[0].address;
 
     console.log("Using wallet address:", walletAddress);
     console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
@@ -59,13 +83,15 @@ deployGovernance = async() =>
         const timelockAddress = transactionReceipt.contractAddress;
         timelockContract.options.address = timelockAddress;
 
+        await renounceMastership(timelockAddress);
+
         console.log("\n==============================================================================\n");
         console.log("Attempting to deploy contract:", config.pathToVEXJson);
 
         const vexContract = new web3.eth.Contract(Vex.abi);
         await vexContract.deploy({ 
             data: Vex.bytecode,
-            arguments: [config.tokenBeneficiaryAddress, timelockAddress]
+            arguments: [walletAddress, timelockAddress]
         })
         .send({ from: walletAddress })
         .on("receipt", (receipt) => {
@@ -97,7 +123,9 @@ deployGovernance = async() =>
 
         const governorAlphaAddress = transactionReceipt.contractAddress;
         governorAlphaContract.options.address = governorAlphaAddress;
-        
+
+        await renounceMastership(governorAlphaAddress);
+
         console.log("\n==============================================================================\n");
         console.log("Nominating GovernorAlpha to be the pendingAdmin of Timelock");
 

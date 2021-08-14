@@ -33,40 +33,42 @@ timelockChangeAdminAndGovernorAcceptAdmin = async() =>
     console.log("Using wallet address:", walletAddress);
     console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
 
-	try 
-	{
-		console.log("\n==============================================================================\n");
+    try 
+    {
+        console.log("\n==============================================================================\n");
         console.log("Attempting executeTransaction on Timelock");
 
-		const timelockContract = new web3.eth.Contract(Timelock.abi, changeAdminConfig.timelockAddress);
+        const timelockContract = new web3.eth.Contract(Timelock.abi, changeAdminConfig.timelockAddress);
 
-		await timelockContract.methods    
+        await timelockContract.methods    
                 .executeTransaction(
-                	changeAdminConfig.timelockAddress, changeAdminConfig.value,
+                    changeAdminConfig.timelockAddress, changeAdminConfig.value,
                     changeAdminConfig.signature, changeAdminConfig.data, changeAdminConfig.eta)
                 .send({ from: walletAddress })
                 .on("receipt", (receipt) => {
                     transactionReceipt = receipt;
                 });
 
-    	assert(await timelockContract.methods
-	                .pendingAdmin()
+        assert(await timelockContract.methods
+                    .pendingAdmin()
                     .call() == changeAdminConfig.governorAlphaAddress);
 
-    	console.log("Timelock executeTransaction was successful. Transaction hash: ", transactionReceipt.transactionHash);
-    	console.log("Attemping acceptTimelockPendingAdmin on GovernorAlpha");
+        console.log("Timelock executeTransaction was successful. Transaction hash: ", transactionReceipt.transactionHash);
+        
+        console.log("\n==============================================================================\n");
+        console.log("Attemping acceptTimelockPendingAdmin on GovernorAlpha");
 
-    	const governorAlphaContract = new web3.eth.Contract(GovernorAlpha.abi, changeAdminConfig.governorAlphaAddress);
+        const governorAlphaContract = new web3.eth.Contract(GovernorAlpha.abi, changeAdminConfig.governorAlphaAddress);
 
-	    await governorAlphaContract.methods
-		        .acceptTimelockPendingAdmin()
-	    	    .send({ from: walletAddress });
+        await governorAlphaContract.methods
+                .acceptTimelockPendingAdmin()
+                .send({ from: walletAddress });
 
-	    assert(await timelockContract.methods
-    		            .admin().call() == changeAdminConfig.governorAlphaAddress);
+        assert(await timelockContract.methods
+                        .admin().call() == changeAdminConfig.governorAlphaAddress);
 
-    	console.log("GovernorAlpha successfully accepted admin for Timelock");
-	}
+        console.log("GovernorAlpha successfully accepted admin for Timelock");
+    }
     catch(error)
     {
         console.log("Deployment failed with:", error)

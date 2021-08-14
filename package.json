@@ -2,7 +2,7 @@
   "name": "@vexchange/governance",
   "version": "1.0.2",
   "description": "🏛 Governance contracts for the Vexchange protocol",
-  "author": "Noah Zinsmeister",
+  "author": "",
   "license": "MIT",
   "files": [
     "build",
@@ -15,7 +15,7 @@
     "test": "mocha",
     "lint": "prettier ./test/**/*.ts --check",
     "prepublishOnly": "yarn test",
-    "deployGovernance": "node scripts/deployGovernance.js",
+    "deployGovernance": "npm run compile && node scripts/deployGovernance.js",
     "changeAdminAndAcceptAdmin": "node scripts/timelockChangeAdminAndGovernorAcceptAdmin.js"
   },
   "devDependencies": {
