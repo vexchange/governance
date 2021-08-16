@@ -30,7 +30,7 @@ Collected fees from Vexchange V2 will also be held in this smart contract.
 
 ### Functions added 
 
-- `GovernorAlpha::acceptAdmin()`
+- `GovernorAlpha::acceptTimelockPendingAdmin()`
 
 ## Deployment
 
