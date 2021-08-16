@@ -304,4 +304,8 @@ contract GovernorAlpha {
         assembly { chainId := chainid() }
         return chainId;
     }
+
+    function acceptTimelockPendingAdmin() external {
+        timelock.acceptAdmin();
+    }
 }
