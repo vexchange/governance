@@ -14,7 +14,7 @@ contract VEX {
     uint8 public constant decimals = 18;
 
     /// @notice Total number of tokens in circulation
-    uint public totalSupply = 1_000_000_000e18; // 1 billion VEX
+    uint public totalSupply = 100_000_000e18; // 100 million VEX
 
     /// @notice Address which may mint new tokens
     address public minter;

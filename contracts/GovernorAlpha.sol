@@ -20,10 +20,10 @@ contract GovernorAlpha {
     string public constant name = "Vexchange Governor Alpha";
 
     /// @notice The number of votes in support of a proposal required in order for a quorum to be reached and for a vote to succeed
-    function quorumVotes() public pure returns (uint) { return 40_000_000e18; } // 4% of Vex
+    function quorumVotes() public pure returns (uint) { return 3_000_000e18; } // 3% of initial supply of Vex
 
     /// @notice The number of votes required in order for a voter to become a proposer
-    function proposalThreshold() public pure returns (uint) { return 10_000_000e18; } // 1% of Vex
+    function proposalThreshold() public pure returns (uint) { return 100_000e18; } // 0.1% of initial supply of Vex
 
     /// @notice The maximum number of actions that can be included in a proposal
     function proposalMaxOperations() public pure returns (uint) { return 10; } // 10 actions
@@ -32,7 +32,7 @@ contract GovernorAlpha {
     function votingDelay() public pure returns (uint) { return 1; } // 1 block
 
     /// @notice The duration of voting on a proposal, in blocks
-    function votingPeriod() public pure returns (uint) { return 40_320; } // ~7 days in blocks (assuming 15s blocks)
+    function votingPeriod() public pure returns (uint) { return 60_480; } // ~7 days in blocks (assuming 10s VeChain blocks)
 
     /// @notice The address of the Vexchange Protocol Timelock
     TimelockInterface public timelock;
