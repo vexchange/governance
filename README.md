@@ -22,11 +22,13 @@ All three of these components work together with their own sphere of influence. 
 
 Collected fees from Vexchange V2 will also be held in this smart contract. 
 
-### Parameters changed from Uniswap
+### Parameters set for Vexchange
 
-- total supply 
-- quorumVotes
-- proposalThreshold
+- `VEX::totalSupply`: set at 100 million
+- `GovernorAlpha::quorumVotes`: set at 3% of initial supply of VEX
+- `GovernorAlpha::proposalThreshold`: set at 0.1% of initial supply of VEX
+- `GovernorAlpha::votingPeriod`: set at 7 days
+- `Timelock::delay`: set at 2 days
 
 ### Functions added 
 
