@@ -16,7 +16,7 @@ The GovernorAlpha contract is the contract that does the actual "governance" par
 
 ### **Timelock**
 
-The final component of the system is a Timelock. Timelock contracts essentially "delay" the execution of transactions to give the community a chance for a "sanity check" to be  run over the outcome of a vote. It's important if a last minute bug is found in the system and it needs to be caught before a transaction is implemented.
+The final component of the system is a Timelock. Timelock contracts essentially "delay" the execution of transactions to give the community a chance for a "sanity check" to be run over the outcome of a vote. It's important if a last minute bug is found in the system and it needs to be caught before a transaction is implemented.
 
 All three of these components work together with their own sphere of influence. The VEX token essentially functions as a voter registration tool (and as a tradable VIP180 token), the GovernorAlpha acts as a polling location- the place where voting happens, and the Timelock acts as a loading bay that holds decision for a set amount of time before executing them on the network. 
 
@@ -25,8 +25,8 @@ Collected fees from Vexchange V2 will also be held in this smart contract.
 ### Parameters set for Vexchange
 
 - `VEX::totalSupply`: set at 100 million
-- `GovernorAlpha::quorumVotes`: set at 3% of initial supply of VEX
-- `GovernorAlpha::proposalThreshold`: set at 0.1% of initial supply of VEX
+- `GovernorAlpha::quorumVotes`: set at 3% of configured total supply of VEX
+- `GovernorAlpha::proposalThreshold`: set at 0.1% of configured total supply of VEX
 - `GovernorAlpha::votingPeriod`: set at 7 days
 - `Timelock::delay`: set at 2 days
 
@@ -50,19 +50,19 @@ After the Timelock delay (currently 2 days), do `npm run timelockChangeAdminAndG
 ### Deployed contract addresses 
 
 **Mainnet**
-| Contract       | Address                                    |
-| ---            | ---                                        |
-| VEX            |                                          |
-| Timelock       |                                          |
-| GovernorAlpha  |                                          |
+| Contract       | Address                             |
+| ---            | ---                                 |
+| VEX            |                                     |
+| Timelock       |                                     |
+| GovernorAlpha  |                                     |
 
 
 **Testnet**
-| Contract  | Address                                    |
-| ---       | ---                                        |
-| VEX      |  |
-| Timelock |  |
-| GovernorAlpha  |  |
+| Contract       | Address                             |
+| ---            | ---                                 |
+| VEX            |                                     |
+| Timelock       |                                     |
+| GovernorAlpha  |                                     |
 
 ## Attribution
 
