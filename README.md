@@ -46,6 +46,13 @@ To do that, we first do `npm run deployGovernance [mainnet|testnet]`. If the dep
 
 After the Timelock delay (currently 2 days), do `npm run timelockChangeAdminAndGovernorAcceptAdmin [mainnet|testnet]`. This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock.
 
+### TreasuryVester deployment
+```
+npm run deployVester [mainnet|testnet]
+```
+
+Modify recipient addresses and VEX addresses in `vesterConfig.js`.
+
 
 ### Deployed contract addresses 
 
