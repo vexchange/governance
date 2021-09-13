@@ -1,7 +1,5 @@
 # @vexchange/governance
 
-
-
 ## Docs 
 
 Documentation taken from https://github.com/withtally/Tutorial-Deploy-Governance. Refer to link for even more detailed description of all parameters and functions.
@@ -39,7 +37,7 @@ Collected fees from Vexchange V2 will also be held in this smart contract.
 
 Place `.env` with the private key in the root directory under the variable `PRIVATE_KEY=0x000...abc`
 
-### 2 stage deployment
+### Multi-stage deployment
 
 Since we cannot calculate the address of GovernorAlpha beforehand on VeChain, we have to change the Timelock admin after deployment. 
 
@@ -47,13 +45,21 @@ To do that, we first do
 ```
 npm run deployGovernance [mainnet|testnet]
 ```
-If the deployment is successful, it will create a file `changeAdminConfig.json` which stores the arguments for the queued transaction in Timelock. 
+If the deployment is successful, it will create `deployedAddresses.json` which stores the arguments for the queued transaction in Timelock. This script also changes the owner and platformFeeTo of `VexchangeV2Factory`. Therefore, configure the V2Factory in `deploymentConfig.js` before running this script.
+
+When ready to handover the admin of the `Timelock` to `GovernorAlpha`, we run:
+
+```
+npm run queueTransaction [mainnet|testnet]
+```
+If the transaction is queued successfully, it will create `changeAdminConfig.json` which stores the parameters for execution after the Timelock delay. 
+
 
 After the Timelock delay (currently 2 days), do 
 ```
 npm run timelockChangeAdminAndGovernorAcceptAdmin [mainnet|testnet]
 ```
-This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock. This script also changes the owner and platformFeeTo of `VexchangeV2Factory`. Therefore, configure the V2Factory in `deploymentConfig.js` before running this script.
+This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock. 
 
 ### TreasuryVester deployment
 ```

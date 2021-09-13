@@ -1,10 +1,11 @@
 // ES5 style
-const config = require("./deploymentConfig");
+const config = require("./config/deploymentConfig");
 const thorify = require("thorify").thorify;
 const Web3 = require("web3");
 const Vex = require(config.pathToVEXJson);
 const Timelock = require(config.pathToTimelockJson);
 const GovernorAlpha = require(config.pathToGovernorAlphaJson);
+const V2Factory = require(config.pathToV2FactoryJson);
 const assert = require('assert');
 const fs = require('fs');
 
@@ -127,50 +128,42 @@ deployGovernance = async() =>
         await renounceMastership(governorAlphaAddress);
 
         console.log("\n==============================================================================\n");
-        console.log("Nominating GovernorAlpha to be the pendingAdmin of Timelock");
+        console.log("Changing platformFeeTo and ownership of V2 factory to the timelock address");
 
-        const blockNumber = await web3.eth.getBlockNumber();
-        const timestamp = (await web3.eth.getBlock(blockNumber)).timestamp;
+        const factoryContract = new web3.eth.Contract(V2Factory.abi, config.v2FactoryAddress);
 
-        const value = 0;
-        const signature = "setPendingAdmin(address)";
-        const data = web3.eth.abi.encodeParameter('address', governorAlphaAddress);
+        await factoryContract.methods
+                .setPlatformFeeTo(timelockAddress)
+                .send({ from: walletAddress })
+                .on("receipt", (receipt) => {
+                    transactionReceipt = receipt;
+                });
 
-        // Add some buffer to the delay 
-        const eta = parseInt(timestamp + config.timelockDelay * 1.05);
+        assert(await factoryContract.methods
+                      .platformFeeTo()
+                      .call() == timelockAddress);
 
-        await timelockContract.methods
-            .queueTransaction(timelockAddress, value, 
-                signature, data, eta)
-            .send({ from: walletAddress })
-            .on("receipt", (receipt) => {
-                transactionReceipt = receipt;
-            });
+        console.log("setPlatformFeeTo succeeded. Txid:", transactionReceipt.transactionHash);
 
-        const transactionHashQueued = transactionReceipt.outputs[0].events[0].topics[1];
-        console.log("Transaction Hash of queued proposal:", transactionHashQueued);
+        await factoryContract.methods
+                .transferOwnership(timelockAddress)
+                .send({ from: walletAddress })
+                .on("receipt", (receipt) => {
+                    transactionReceipt = receipt;
+                });
         
-        // Ensure that transaction is indeed queued
-        assert(await timelockContract.methods
-                        .queuedTransactions(transactionHashQueued)
-                        .call());
+        assert(await factoryContract.methods
+                      .owner()
+                      .call() == timelockAddress);
 
-        console.log("Transaction successfully queued. Call executeTransaction with target=", 
-                    timelockAddress,
-                    "value=", value, "signature=", signature,
-                    "data=", data,
-                    "eta=", eta,
-                    "after the eta");
+        console.log("Ownership successfully transferred. Txid:", transactionReceipt.transactionHash);
 
         const output = {
             timelockAddress: timelockAddress,
             governorAlphaAddress: governorAlphaAddress,
-            signature: signature,
-            value: value,
-            data: data,
-            eta: eta,
+            network: process.argv[2], 
         }
-        fs.writeFileSync('./scripts/changeAdminConfig.json', JSON.stringify(output, null, 2));
+        fs.writeFileSync('./scripts/config/deployedAddresses.json', JSON.stringify(output, null, 2));
     } 
     catch(error)
     {
