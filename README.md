@@ -8,7 +8,7 @@ Documentation taken from https://github.com/withtally/Tutorial-Deploy-Governance
 
 ### **VEX**
 
-The VEX contract is what creates the VEX token. It is an VIP180 compatible token with support for checkpoints. Checkpointing is a system by which you can check the token balance of any user at any particular point in history. This is important because when a vote comes up that users need to vote on, you don't want individuals buying or selling tokens specifically to change the outcome of the vote and then dumping straight after a vote closes. To avoid this, checkpoints are used. By the time someone creates a proposal and puts it up for a vote in the Vexchange ecosystem, the voting power of all token holders is already known, and fixed, at a point in the past. This way users can still buy or sell tokens, but their balances won't affect their voting power. 
+The VEX contract is what creates the VEX token. It is a VIP180 compatible token with support for checkpoints. Checkpointing is a system by which you can check the token balance of any user at any particular point in history. This is important because when a vote comes up that users need to vote on, you don't want individuals buying or selling tokens specifically to change the outcome of the vote and then dumping straight after a vote closes. To avoid this, checkpoints are used. By the time someone creates a proposal and puts it up for a vote in the Vexchange ecosystem, the voting power of all token holders is already known, and fixed, at a point in the past. This way users can still buy or sell tokens, but their balances won't affect their voting power. 
 
 ### **GovernorAlpha**
 
@@ -33,6 +33,7 @@ Collected fees from Vexchange V2 will also be held in this smart contract.
 ### Functions added 
 
 - `GovernorAlpha::acceptTimelockPendingAdmin()`
+- `VEX::burn()`
 
 ## Deployment
 
@@ -42,9 +43,17 @@ Place `.env` with the private key in the root directory under the variable `PRIV
 
 Since we cannot calculate the address of GovernorAlpha beforehand on VeChain, we have to change the Timelock admin after deployment. 
 
-To do that, we first do `npm run deployGovernance [mainnet|testnet]`. If the deployment is successful, it will create a file `changeAdminConfig.json` which stores the arguments for the queued transaction in Timelock. 
+To do that, we first do 
+```
+npm run deployGovernance [mainnet|testnet]
+```
+If the deployment is successful, it will create a file `changeAdminConfig.json` which stores the arguments for the queued transaction in Timelock. 
 
-After the Timelock delay (currently 2 days), do `npm run timelockChangeAdminAndGovernorAcceptAdmin [mainnet|testnet]`. This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock.
+After the Timelock delay (currently 2 days), do 
+```
+npm run timelockChangeAdminAndGovernorAcceptAdmin [mainnet|testnet]
+```
+This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock. This script also changes the owner and platformFeeTo of `VexchangeV2Factory`. Therefore, configure the V2Factory in `deploymentConfig.js` before running this script.
 
 ### TreasuryVester deployment
 ```
@@ -53,6 +62,13 @@ npm run deployVester [mainnet|testnet]
 
 Modify recipient addresses and VEX addresses in `vesterConfig.js`.
 
+
+### Claiming vested tokens
+```
+npm run claimVestedTokens [mainnet|testnet] [address of Vester contract]
+```
+
+Be sure to input the VEX token address in `vesterConfig.js`
 
 ### Deployed contract addresses 
 

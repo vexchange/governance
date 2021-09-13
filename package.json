@@ -17,7 +17,8 @@
     "prepublishOnly": "yarn test",
     "deployGovernance": "npm run compile && node scripts/deployGovernance.js",
     "changeAdminAndAcceptAdmin": "node scripts/timelockChangeAdminAndGovernorAcceptAdmin.js",
-    "deployVester": "node scripts/deployVester.js"
+    "deployVester": "node scripts/deployVester.js",
+    "claimVestedTokens": "node scripts/claimVestedTokens.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",

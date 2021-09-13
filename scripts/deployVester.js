@@ -8,9 +8,6 @@ const assert = require('assert');
 
 let rpcUrl = null;
 let vexAddress = null;
-let recipientAddress = null;
-let cliffDelay = null;
-let amount = null;
 
 if (process.argv.length < 3) 
 {
@@ -58,7 +55,7 @@ deployVester = async() =>
     try
     {
         // This is the address associated with the private key
-        const walletAddress = web3.eth.accounts.wallet[0].address
+        const walletAddress = web3.eth.accounts.wallet[0].address;
         const vexContract = new web3.eth.Contract(Vex.abi, vexAddress);
 
         console.log("Using wallet address:", walletAddress);
