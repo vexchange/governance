@@ -27,7 +27,7 @@ const web3 = thorify(new Web3(), rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
-timelockChangeAdminAndGovernorAcceptAdmin = async() =>
+executeTimelockTransfer = async() =>
 {
     const walletAddress = web3.eth.accounts.wallet[0].address
 
@@ -76,4 +76,4 @@ timelockChangeAdminAndGovernorAcceptAdmin = async() =>
     }
 }
 
-timelockChangeAdminAndGovernorAcceptAdmin();
+executeTimelockTransfer();

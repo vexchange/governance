@@ -27,7 +27,7 @@ const web3 = thorify(new Web3(), rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
-queueTransaction = async() =>
+queueTimelockTransfer = async() =>
 {
     assert(deployedAddresses.network == process.argv[2], 
            "Network mismatch between deployedAddresses and command line argument");
@@ -93,4 +93,4 @@ queueTransaction = async() =>
     }
 }
 
-queueTransaction();
+queueTimelockTransfer();

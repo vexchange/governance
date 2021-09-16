@@ -50,14 +50,14 @@ If the deployment is successful, it will create `deployedAddresses.json` which s
 When ready to handover the admin of the `Timelock` to `GovernorAlpha`, we run:
 
 ```
-npm run queueTransaction [mainnet|testnet]
+npm run queueTimelockTransfer [mainnet|testnet]
 ```
 If the transaction is queued successfully, it will create `changeAdminConfig.json` which stores the parameters for execution after the Timelock delay. 
 
 
 After the Timelock delay (currently 2 days), do 
 ```
-npm run timelockChangeAdminAndGovernorAcceptAdmin [mainnet|testnet]
+npm run executeTimelockTransfer [mainnet|testnet]
 ```
 This script will read the config from `changeAdminConfig.json` to execute the transaction on Timelock. The GovernorAlpha contract will also accept the role of admin by calling `acceptAdmin()` in Timelock. 
 
