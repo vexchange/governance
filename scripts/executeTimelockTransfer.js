@@ -1,5 +1,5 @@
-const config = require("./deploymentConfig");
-const changeAdminConfig = require("./changeAdminConfig");
+const config = require("./config/deploymentConfig");
+const changeAdminConfig = require("./config/changeAdminConfig");
 const thorify = require("thorify").thorify;
 const Web3 = require("web3");
 const Timelock = require(config.pathToTimelockJson);
@@ -27,7 +27,7 @@ const web3 = thorify(new Web3(), rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
-timelockChangeAdminAndGovernorAcceptAdmin = async() =>
+executeTimelockTransfer = async() =>
 {
     const walletAddress = web3.eth.accounts.wallet[0].address
 
@@ -69,36 +69,6 @@ timelockChangeAdminAndGovernorAcceptAdmin = async() =>
                         .admin().call() == changeAdminConfig.governorAlphaAddress);
 
         console.log("GovernorAlpha successfully accepted admin for Timelock");
-
-        console.log("Changing owner and platformFeeTo of V2 factory to the timelock address");
-
-        const factoryContract = new web3.eth.Contract(V2Factory.abi, config.v2FactoryAddress);
-
-        await factoryContract.methods
-                .transferOwnership(changeAdminConfig.timelockAddress)
-                .send({ from: walletAddress })
-                .on("receipt", () => {
-                    transactionReceipt = receipt;
-                });
-        
-        assert(await factoryContract.methods
-                      .owner()
-                      .call() == changeAdminConfig.timelockAddress);
-
-        console.log("Ownership successfully transferred. Txid:", transactionReceipt.transactionHash);
-
-        await factoryContract.methods
-                .setPlatformFeeTo(changeAdminConfig.timelockAddress)
-                .send({ from: walletAddress })
-                .on("receipt", () => {
-                    transactionReceipt = receipt;
-                });
-
-        assert(await factoryContract.methods
-                      .platformFeeTo()
-                      .call() == changeAdminConfig.timelockAddress);
-
-        console.log("setPlatformFeeTo succeeded. Txid:", transactionReceipt.transactionHash);
     }
     catch(error)
     {
@@ -106,4 +76,4 @@ timelockChangeAdminAndGovernorAcceptAdmin = async() =>
     }
 }
 
-timelockChangeAdminAndGovernorAcceptAdmin();
+executeTimelockTransfer();
