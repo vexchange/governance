@@ -6,10 +6,12 @@ const Vex = require(config.pathToVEXJson);
 const Timelock = require(config.pathToTimelockJson);
 const GovernorAlpha = require(config.pathToGovernorAlphaJson);
 const V2Factory = require(config.pathToV2FactoryJson);
-const assert = require('assert');
-const fs = require('fs');
+const assert = require("assert");
+const fs = require("fs");
+const readlineSync = require("readline-sync");
 
-let rpcUrl = null;
+let network = null;
+
 if (process.argv.length < 3) 
 {
     console.error("Please specify network, either mainnet or testnet");
@@ -17,15 +19,14 @@ if (process.argv.length < 3)
 } 
 else
 {
-    if (process.argv[2] == "mainnet") rpcUrl = config.mainnetRpcUrl;
-    else if (process.argv[2] == "testnet") rpcUrl = config.testnetRpcUrl;
-    else {
+    network = config.network[process.argv[2]];
+    if (network === undefined) {
         console.error("Invalid network specified");
         process.exit(1);
     }
 }
 
-const web3 = thorify(new Web3(), rpcUrl);
+const web3 = thorify(new Web3(), network.rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
@@ -67,6 +68,12 @@ deployGovernance = async() =>
 
         // Deploy Timelock
         console.log("Attempting to deploy contract:", config.pathToTimelockJson);
+
+        if (network.name == "mainnet")
+        {
+            let input = readlineSync.question("Confirm you want to deploy this on the MAINNET? (y/n) ");
+            if (input != 'y') process.exit(1);
+        }
 
         const timelockContract = new web3.eth.Contract(Timelock.abi);
         await timelockContract.deploy({ 
@@ -130,6 +137,13 @@ deployGovernance = async() =>
         console.log("\n==============================================================================\n");
         console.log("Changing platformFeeTo and ownership of V2 factory to the timelock address");
 
+        const output = {
+            timelockAddress: timelockAddress,
+            governorAlphaAddress: governorAlphaAddress,
+            network: network.name, 
+        }
+        fs.writeFileSync('./scripts/config/deployedAddresses.json', JSON.stringify(output, null, 2));
+
         const factoryContract = new web3.eth.Contract(V2Factory.abi, config.v2FactoryAddress);
 
         await factoryContract.methods
@@ -158,12 +172,6 @@ deployGovernance = async() =>
 
         console.log("Ownership successfully transferred. Txid:", transactionReceipt.transactionHash);
 
-        const output = {
-            timelockAddress: timelockAddress,
-            governorAlphaAddress: governorAlphaAddress,
-            network: process.argv[2], 
-        }
-        fs.writeFileSync('./scripts/config/deployedAddresses.json', JSON.stringify(output, null, 2));
     } 
     catch(error)
     {

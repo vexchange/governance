@@ -6,8 +6,10 @@ const Timelock = require(config.pathToTimelockJson);
 const GovernorAlpha = require(config.pathToGovernorAlphaJson);
 const fs = require('fs');
 const assert = require('assert');
+const readlineSync = require("readline-sync");
 
-let rpcUrl = null;
+let network = null;
+
 if (process.argv.length < 3) 
 {
     console.error("Please specify network, either mainnet or testnet");
@@ -15,15 +17,14 @@ if (process.argv.length < 3)
 } 
 else
 {
-    if (process.argv[2] == "mainnet") rpcUrl = config.mainnetRpcUrl;
-    else if (process.argv[2] == "testnet") rpcUrl = config.testnetRpcUrl;
-    else {
+    network = config.network[process.argv[2]];
+    if (network === undefined) {
         console.error("Invalid network specified");
         process.exit(1);
     }
 }
 
-const web3 = thorify(new Web3(), rpcUrl);
+const web3 = thorify(new Web3(), network.rpcUrl);
 
 web3.eth.accounts.wallet.add(config.privateKey);
 
@@ -43,6 +44,12 @@ queueTimelockTransfer = async() =>
 
         console.log("\n==============================================================================\n");
         console.log("Nominating GovernorAlpha to be the pendingAdmin of Timelock");
+
+        if (network.name == "mainnet")
+        {
+            let input = readlineSync.question("Confirm you want to deploy this on the MAINNET? (y/n) ");
+            if (input != 'y') process.exit(1);
+        }
 
         const blockNumber = await web3.eth.getBlockNumber();
         const timestamp = (await web3.eth.getBlock(blockNumber)).timestamp;
