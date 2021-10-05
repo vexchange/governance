@@ -1,13 +1,13 @@
 // ES5 style
-const config = require("./vesterConfig");
+const config = require("./config/vesterConfig");
 const thorify = require("thorify").thorify;
 const Web3 = require("web3");
 const TreasuryVester = require(config.pathToTreasuryVesterJson);
 const Vex = require(config.pathToVEXJson);
 const assert = require('assert');
+const readlineSync = require("readline-sync");
 
-let rpcUrl = null;
-let vexAddress = null;
+let network = null;
 let vesterAddress = null;
 
 if (process.argv.length < 4) 
@@ -17,18 +17,8 @@ if (process.argv.length < 4)
 } 
 else
 {
-    if (process.argv[2] == "mainnet") 
-    {
-        rpcUrl = config.mainnetRpcUrl;
-        vexAddress = config.mainnetVexAddress;
-    }
-    else if (process.argv[2] == "testnet") 
-    {
-        rpcUrl = config.testnetRpcUrl;
-        vexAddress = config.testnetVexAddress;
-    }
-    else 
-    {
+    network = config.network[process.argv[2]];
+    if (network === undefined) {
         console.error("Invalid network specified");
         process.exit(1);
     }
@@ -42,7 +32,7 @@ else
     vesterAddress = process.argv[3];
 }
 
-const web3 = thorify(new Web3(), rpcUrl);
+const web3 = thorify(new Web3(), network.rpcUrl);
 web3.eth.accounts.wallet.add(config.privateKey);
 
 claimVestedTokens = async() =>
@@ -51,11 +41,17 @@ claimVestedTokens = async() =>
     {
         // This is the address associated with the private key
         const walletAddress = web3.eth.accounts.wallet[0].address;
-        const vexContract = new web3.eth.Contract(Vex.abi, vexAddress);
+        const vexContract = new web3.eth.Contract(Vex.abi, network.vexAddress);
 
         console.log("Using wallet address:", walletAddress);
         console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
 
+        if (network.name == "mainnet")
+        {
+            let input = readlineSync.question("Confirm you want to call this on the MAINNET? (y/n) ");
+            if (input != 'y') process.exit(1);
+        }
+        
         const vesterContract = new web3.eth.Contract(TreasuryVester.abi, 
                                                      vesterAddress);
 

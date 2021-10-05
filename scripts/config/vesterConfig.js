@@ -2,10 +2,18 @@ require("dotenv").config({ path: "./.env" })
 
 module.exports = {
 	privateKey: process.env.PRIVATE_KEY,
-	mainnetRpcUrl: "https://mainnet.veblocks.net/",
-	testnetRpcUrl: "https://testnet.veblocks.net/",
-	mainnetVexAddress: "", 
-	testnetVexAddress: "",
+	network: {
+        mainnet: {
+            name: "mainnet",
+            rpcUrl: "https://mainnet.veblocks.net/",
+            vexAddress: ""
+        },
+        testnet: {
+            name: "testnet",
+            rpcUrl: "https://testnet.veblocks.net/",
+            vexAddress: ""
+        }
+    },
 	pathToTreasuryVesterJson: "../build/TreasuryVester.json",
 	pathToVEXJson: "../build/VEX.json",
 	daoCliffDelay: 7776000, // 90 days in seconds

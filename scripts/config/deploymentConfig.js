@@ -2,8 +2,16 @@ require("dotenv").config({ path: "./.env" })
 
 module.exports = {
 	privateKey: process.env.PRIVATE_KEY,
-	mainnetRpcUrl: "https://mainnet.veblocks.net/",
-	testnetRpcUrl: "https://testnet.veblocks.net/",
+	network: {
+        mainnet: {
+            name: "mainnet",
+            rpcUrl: "https://mainnet.veblocks.net/",
+        },
+        testnet: {
+            name: "testnet",
+            rpcUrl: "https://testnet.veblocks.net/",
+        }
+    },
 	timelockDelay: 172800, // 2 days, in seconds, as agreed within the team
 	pathToVEXJson: "../build/VEX.json",
 	pathToGovernorAlphaJson: "../build/GovernorAlpha.json",
