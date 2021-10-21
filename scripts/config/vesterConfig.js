@@ -5,12 +5,12 @@ module.exports = {
 	network: {
         mainnet: {
             name: "mainnet",
-            rpcUrl: "https://mainnet.veblocks.net/",
+            rpcUrl: "http://mainnet02.vechain.fi.blockorder.net",
             vexAddress: ""
         },
         testnet: {
             name: "testnet",
-            rpcUrl: "https://testnet.veblocks.net/",
+            rpcUrl: "http://testnet02.vechain.fi.blockorder.net",
             vexAddress: ""
         }
     },
