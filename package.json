@@ -15,11 +15,13 @@
     "test": "mocha",
     "lint": "prettier ./test/**/*.ts --check",
     "prepublishOnly": "yarn test",
-    "deployGovernance": "npm run compile && node scripts/deployGovernance.js",
+    "deployGovernance": "node scripts/deployGovernance.js",
     "queueTimelockTransfer": "node scripts/queueTimelockTransfer.js",
     "executeTimelockTransfer": "node scripts/executeTimelockTransfer.js",
     "deployVester": "node scripts/deployVester.js",
-    "claimVestedTokens": "node scripts/claimVestedTokens.js"
+    "claimVestedTokens": "node scripts/claimVestedTokens.js",
+    "delegate": "node scripts/delegate.js",
+    "cancelProposal": "node scripts/cancelProposal.js" 
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",

@@ -65,53 +65,11 @@ deployGovernance = async() =>
     try
     {
         let transactionReceipt = null;
-
-        // Deploy Timelock
-        console.log("Attempting to deploy contract:", config.pathToTimelockJson);
-
         if (network.name == "mainnet")
         {
             let input = readlineSync.question("Confirm you want to deploy this on the MAINNET? (y/n) ");
             if (input != 'y') process.exit(1);
         }
-
-        const timelockContract = new web3.eth.Contract(Timelock.abi);
-        await timelockContract.deploy({ 
-            data: Timelock.bytecode,
-            arguments: [walletAddress, config.timelockDelay]
-        })
-        .send({ from: walletAddress })
-        .on("receipt", (receipt) => {
-            transactionReceipt = receipt;
-        });
-
-        console.log("Transaction Hash:", transactionReceipt.transactionHash);
-        console.log("Contract Successfully deployed at address:", transactionReceipt.contractAddress);
-
-        const timelockAddress = transactionReceipt.contractAddress;
-        timelockContract.options.address = timelockAddress;
-
-        await renounceMastership(timelockAddress);
-
-        console.log("\n==============================================================================\n");
-        console.log("Attempting to deploy contract:", config.pathToVEXJson);
-
-        const vexContract = new web3.eth.Contract(Vex.abi);
-        await vexContract.deploy({ 
-            data: Vex.bytecode,
-            arguments: [walletAddress, timelockAddress]
-        })
-        .send({ from: walletAddress })
-        .on("receipt", (receipt) => {
-            transactionReceipt = receipt;
-        });
-        
-        console.log("Transaction Hash:", transactionReceipt.transactionHash);
-        console.log("Contract Successfully deployed at address:", transactionReceipt.contractAddress);
-
-        const vexAddress = transactionReceipt.contractAddress;
-        
-        vexContract.options.address = vexAddress;
 
         console.log("\n==============================================================================\n");
         console.log("Attempting to deploy contract:", config.pathToGovernorAlphaJson);
@@ -119,7 +77,7 @@ deployGovernance = async() =>
         const governorAlphaContract = new web3.eth.Contract(GovernorAlpha.abi);
         await governorAlphaContract.deploy({ 
             data: GovernorAlpha.bytecode,
-            arguments: [timelockAddress, vexAddress]
+            arguments: ["0x62C803633AffaA15c58681bF5251a2753486B2b7", "0x696B30691c767df0Cf6d49a049849FFad54a7EBE"]
         })
         .send({ from: walletAddress })
         .on("receipt", (receipt) => {
@@ -131,47 +89,6 @@ deployGovernance = async() =>
 
         const governorAlphaAddress = transactionReceipt.contractAddress;
         governorAlphaContract.options.address = governorAlphaAddress;
-
-        await renounceMastership(governorAlphaAddress);
-
-        console.log("\n==============================================================================\n");
-        console.log("Changing platformFeeTo and ownership of V2 factory to the timelock address");
-
-        const output = {
-            timelockAddress: timelockAddress,
-            governorAlphaAddress: governorAlphaAddress,
-            network: network.name, 
-        }
-        fs.writeFileSync('./scripts/config/deployedAddresses.json', JSON.stringify(output, null, 2));
-
-        const factoryContract = new web3.eth.Contract(V2Factory.abi, config.v2FactoryAddress);
-
-        await factoryContract.methods
-                .setPlatformFeeTo(timelockAddress)
-                .send({ from: walletAddress })
-                .on("receipt", (receipt) => {
-                    transactionReceipt = receipt;
-                });
-
-        assert(await factoryContract.methods
-                      .platformFeeTo()
-                      .call() == timelockAddress);
-
-        console.log("setPlatformFeeTo succeeded. Txid:", transactionReceipt.transactionHash);
-
-        await factoryContract.methods
-                .transferOwnership(timelockAddress)
-                .send({ from: walletAddress })
-                .on("receipt", (receipt) => {
-                    transactionReceipt = receipt;
-                });
-        
-        assert(await factoryContract.methods
-                      .owner()
-                      .call() == timelockAddress);
-
-        console.log("Ownership successfully transferred. Txid:", transactionReceipt.transactionHash);
-
     } 
     catch(error)
     {
