@@ -1,9 +1,11 @@
 // ES5 style
 const config = require("./config/vesterConfig");
+const deployedAddresses = require("./config/deployedAddresses");
 const thorify = require("thorify").thorify;
 const Web3 = require("web3");
 const TreasuryVester = require(config.pathToTreasuryVesterJson);
 const Vex = require(config.pathToVEXJson);
+const fs = require("fs");
 const assert = require('assert');
 const readlineSync = require("readline-sync");
 
@@ -46,7 +48,8 @@ deployVester = async() =>
     {
         // This is the address associated with the private key
         const walletAddress = web3.eth.accounts.wallet[0].address;
-        const vexContract = new web3.eth.Contract(Vex.abi, network.vexAddress);
+        const vexContract = new web3.eth.Contract(Vex.abi, deployedAddresses.vexAddress);
+        let fileOutput = {};
 
         console.log("Using wallet address:", walletAddress);
         console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
@@ -82,7 +85,7 @@ deployVester = async() =>
             const vesterContract = new web3.eth.Contract(TreasuryVester.abi);
             await vesterContract.deploy({ 
                     data: TreasuryVester.bytecode,
-                    arguments: [network.vexAddress, 
+                    arguments: [deployedAddresses.vexAddress, 
                                 config.allocations[recipient].address,
                                 amount,
                                 vestingBegin,
@@ -132,8 +135,13 @@ deployVester = async() =>
             assert(await vexContract.methods
                             .balanceOf(vesterContract.options.address)
                             .call() == amount);
-        }
 
+            fileOutput[recipient] = {
+                recipientAddress: config.allocations[recipient].address,
+                vesterAddress: vesterContract.options.address 
+            }
+        }
+        fs.writeFileSync('./scripts/config/vesterAddresses.json', JSON.stringify(fileOutput, null, 2));
         console.log("Happy waiting!");
     }
     catch(error)

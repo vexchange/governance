@@ -6,12 +6,10 @@ module.exports = {
         mainnet: {
             name: "mainnet",
             rpcUrl: "https://mainnet.veblocks.net/",
-            vexAddress: ""
         },
         testnet: {
             name: "testnet",
             rpcUrl: "https://testnet.veblocks.net/",
-            vexAddress: ""
         }
     },
 	pathToTreasuryVesterJson: "../build/TreasuryVester.json",

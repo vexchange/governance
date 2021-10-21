@@ -140,6 +140,7 @@ deployGovernance = async() =>
         const output = {
             timelockAddress: timelockAddress,
             governorAlphaAddress: governorAlphaAddress,
+            vexAddress: vexAddress,
             network: network.name, 
         }
         fs.writeFileSync('./scripts/config/deployedAddresses.json', JSON.stringify(output, null, 2));

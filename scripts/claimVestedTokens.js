@@ -1,5 +1,6 @@
 // ES5 style
 const config = require("./config/vesterConfig");
+const deployedAddresses = require("./config/deployedAddresses");
 const thorify = require("thorify").thorify;
 const Web3 = require("web3");
 const TreasuryVester = require(config.pathToTreasuryVesterJson);
@@ -41,7 +42,7 @@ claimVestedTokens = async() =>
     {
         // This is the address associated with the private key
         const walletAddress = web3.eth.accounts.wallet[0].address;
-        const vexContract = new web3.eth.Contract(Vex.abi, network.vexAddress);
+        const vexContract = new web3.eth.Contract(Vex.abi, deployedAddresses.vexAddress);
 
         console.log("Using wallet address:", walletAddress);
         console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
