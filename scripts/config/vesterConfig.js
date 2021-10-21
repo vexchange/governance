@@ -5,11 +5,11 @@ module.exports = {
 	network: {
         mainnet: {
             name: "mainnet",
-            rpcUrl: "https://mainnet.veblocks.net/",
+            rpcUrl: "http://mainnet02.vechain.fi.blockorder.net",
         },
         testnet: {
             name: "testnet",
-            rpcUrl: "https://testnet.veblocks.net/",
+            rpcUrl: "http://testnet02.vechain.fi.blockorder.net",
         }
     },
 	pathToTreasuryVesterJson: "../build/TreasuryVester.json",
@@ -21,23 +21,23 @@ module.exports = {
 	// Token amount not in 18 decimal form
 	allocations: {
 		dao: {
-			address: "",
+			address: "", // use the timelock address
 			tokens: 50_000_000,
 		},
 		oliver: {
-			address: "",
+			address: "0x6aE0a6E33688d0f3dCe513713e73DC7D99C1A00c", // oliver personal
 			tokens: 10_000_000,
 		},
 		kenneth: {
-			address: "",
+			address: "", // kenneth personal
 			tokens: 10_000_000,
 		},
 		proxima: {
-			address: "",
+			address: "", // proxima personal
 			tokens: 10_000_000,
 		},
 		team: {
-			address: "",
+			address: "", // oliver & kenneth shared
 			tokens: 10_000_000,
 		}
 	}

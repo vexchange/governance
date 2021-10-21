@@ -5,11 +5,11 @@ module.exports = {
 	network: {
         mainnet: {
             name: "mainnet",
-            rpcUrl: "https://mainnet.veblocks.net/",
+            rpcUrl: "http://mainnet02.vechain.fi.blockorder.net",
         },
         testnet: {
             name: "testnet",
-            rpcUrl: "https://testnet.veblocks.net/",
+            rpcUrl: "http://testnet02.vechain.fi.blockorder.net",
         }
     },
 	timelockDelay: 172800, // 2 days, in seconds, as agreed within the team
