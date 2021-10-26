@@ -20,6 +20,7 @@
     "executeTimelockTransfer": "node scripts/executeTimelockTransfer.js",
     "deployVester": "node scripts/deployVester.js",
     "claimVestedTokens": "node scripts/claimVestedTokens.js",
+    "transferVex": "node scripts/transferVex.js",
     "delegate": "node scripts/delegate.js",
     "cancelProposal": "node scripts/cancelProposal.js" 
   },
