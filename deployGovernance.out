@@ -1,0 +1,40 @@
+
+> @vexchange/governance@1.0.2 deployGovernance /home/oliver/ghq/github.com/vexchange/governance
+> npm run compile && node scripts/deployGovernance.js "mainnet"
+
+
+> @vexchange/governance@1.0.2 precompile /home/oliver/ghq/github.com/vexchange/governance
+> rimraf ./build/
+
+
+> @vexchange/governance@1.0.2 compile /home/oliver/ghq/github.com/vexchange/governance
+> waffle
+
+Deployer Address: 0x133720c677ac960Fd6692457233D2CeEA3754529
+Owner Address: 0x15f0a2ED2133D874Ddd0AB4A1c5ab97Ff6e00374
+Using RPC: http://mainnet02.vechain.fi.blockorder.net
+Attempting to deploy contract: ../build/Timelock.json
+Transaction Hash: 0xd4037eaa320eb9cf3bea83ddc051bb9516fb75b677984dc1660184b2ee3df868
+Contract Successfully deployed at address: 0x41D293Ee2924FF67Bd934fC092Be408162448f86
+Renouncing Mastership
+Mastership successfully renounced, txid:  0x5ecdd667f4565a48af818dce3cf65ed11ff34142d68ccd660656226dc194a5d4
+
+==============================================================================
+
+Attempting to deploy contract: ../build/VEX.json
+Transaction Hash: 0x8128f0493c74c99a88725609be1d804119c2c28dfd688d505b5451e187884f67
+Contract Successfully deployed at address: 0x0BD802635eb9cEB3fCBe60470D2857B86841aab6
+
+==============================================================================
+
+Attempting to deploy contract: ../build/GovernorAlpha.json
+Transaction Hash: 0x4a5887bd7646c0dab0c1f42b311e9f6b601ec69eb923c191d86971ca3354b6f6
+Contract Successfully deployed at address: 0xAE6d4be61A36984dfbE7399A73B59c92b994E9F7
+Renouncing Mastership
+Mastership successfully renounced, txid:  0xa19832e17005c917cc1aef516510a05e2a3ed729541629d4026652656d8444c7
+
+==============================================================================
+
+Changing platformFeeTo and ownership of V2 factory to the timelock address
+setPlatformFeeTo succeeded. Txid: 0xd0965e445b4a790989d36a6ae1802815077f51d338ae9c3c7b93bbe87e41d702
+Ownership successfully transferred. Txid: 0x8fffc0b733e9e6c6ffd7bab869a63c7ec847a88782a5cc26d227c575e5156415
