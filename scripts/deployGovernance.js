@@ -28,7 +28,10 @@ else
 
 const web3 = thorify(new Web3(), network.rpcUrl);
 
-web3.eth.accounts.wallet.add(config.privateKey);
+web3.eth.accounts.wallet.add(config.deployerPrivateKey);
+web3.eth.accounts.wallet.add(config.ownerPrivateKey);
+const deployerAddress = web3.eth.accounts.wallet[0].address;
+const ownerAddress = web3.eth.accounts.wallet[1].address;
 
 
 renounceMastership = async(contractAddress) => {
@@ -47,19 +50,16 @@ renounceMastership = async(contractAddress) => {
     await web3.eth.sendTransaction({
         to: PROTOTYPE_CONTRACT_ADDRESS,
         data: SET_MASTER_SELECTOR + data,
-        from: web3.eth.accounts.wallet[0].address
+        from: deployerAddress
     }).on("receipt", (receipt) => {
         console.log("Mastership successfully renounced, txid: ", receipt.transactionHash);
     });
 }
 
-
 deployGovernance = async() =>
 {
-    // This is the address associated with the private key
-    const walletAddress = web3.eth.accounts.wallet[0].address;
-
-    console.log("Using wallet address:", walletAddress);
+    console.log("Deployer Address:", deployerAddress);
+    console.log("Owner Address:", ownerAddress);
     console.log("Using RPC:", web3.eth.currentProvider.RESTHost);
 
     try
@@ -78,9 +78,9 @@ deployGovernance = async() =>
         const timelockContract = new web3.eth.Contract(Timelock.abi);
         await timelockContract.deploy({ 
             data: Timelock.bytecode,
-            arguments: [walletAddress, config.timelockDelay]
+            arguments: [deployerAddress, config.timelockDelay]
         })
-        .send({ from: walletAddress })
+        .send({ from: deployerAddress })
         .on("receipt", (receipt) => {
             transactionReceipt = receipt;
         });
@@ -99,9 +99,9 @@ deployGovernance = async() =>
         const vexContract = new web3.eth.Contract(Vex.abi);
         await vexContract.deploy({ 
             data: Vex.bytecode,
-            arguments: [walletAddress, timelockAddress]
+            arguments: [deployerAddress, timelockAddress]
         })
-        .send({ from: walletAddress })
+        .send({ from: deployerAddress })
         .on("receipt", (receipt) => {
             transactionReceipt = receipt;
         });
@@ -121,7 +121,7 @@ deployGovernance = async() =>
             data: GovernorAlpha.bytecode,
             arguments: [timelockAddress, vexAddress]
         })
-        .send({ from: walletAddress })
+        .send({ from: deployerAddress })
         .on("receipt", (receipt) => {
             transactionReceipt = receipt;
         });
@@ -149,7 +149,7 @@ deployGovernance = async() =>
 
         await factoryContract.methods
                 .setPlatformFeeTo(timelockAddress)
-                .send({ from: walletAddress })
+                .send({ from: ownerAddress })
                 .on("receipt", (receipt) => {
                     transactionReceipt = receipt;
                 });
@@ -162,7 +162,7 @@ deployGovernance = async() =>
 
         await factoryContract.methods
                 .transferOwnership(timelockAddress)
-                .send({ from: walletAddress })
+                .send({ from: ownerAddress })
                 .on("receipt", (receipt) => {
                     transactionReceipt = receipt;
                 });

@@ -1,7 +1,9 @@
 require("dotenv").config({ path: "./.env" })
 
 module.exports = {
-	privateKey: process.env.PRIVATE_KEY,
+	privateKey: process.env.DEPLOYER_PRIVATE_KEY,
+	deployerPrivateKey: process.env.DEPLOYER_PRIVATE_KEY,
+	ownerPrivateKey: process.env.OWNER_PRIVATE_KEY,
 	network: {
         mainnet: {
             name: "mainnet",
