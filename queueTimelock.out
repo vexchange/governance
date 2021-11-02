@@ -1,0 +1,12 @@
+> @vexchange/governance@1.0.2 queueTimelockTransfer /home/oliver/ghq/github.com/vexchange/governance
+> node scripts/queueTimelockTransfer.js "mainnet"
+
+Using wallet address: 0x133720c677ac960Fd6692457233D2CeEA3754529
+Using RPC: http://mainnet02.vechain.fi.blockorder.net
+
+==============================================================================
+
+Nominating GovernorAlpha to be the pendingAdmin of Timelock
+Confirm you want to deploy this on the MAINNET? (y/n) y
+Transaction Hash of queued proposal: 0x2dc8523395ad09cb8be28bfa0dd7196777d21f4eb4d8f8e234673bdb284d75b5
+Transaction successfully queued. Call executeTransaction with target= 0x41D293Ee2924FF67Bd934fC092Be408162448f86 value= 0 signature= setPendingAdmin(address) data= 0x000000000000000000000000ae6d4be61a36984dfbe7399a73b59c92b994e9f7 eta= 1636068350 after the eta
