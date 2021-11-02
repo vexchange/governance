@@ -1,0 +1,51 @@
+
+> @vexchange/governance@1.0.2 deployVester /home/oliver/ghq/github.com/vexchange/governance
+> node scripts/deployVester.js "mainnet"
+
+Using wallet address: 0x133720c677ac960Fd6692457233D2CeEA3754529
+Using RPC: http://mainnet02.vechain.fi.blockorder.net
+Checking if addresses are valid
+All addresses are valid
+
+==============================================================================
+
+Deploying TreasuryVester with parameters:
+Recipient oliver   0x6aE0a6E33688d0f3dCe513713e73DC7D99C1A00c
+Amount: 10000000000000000000000000
+Vesting Begins:  1635887220
+Vesting Cliff:  1635887220
+Vesting Ends:  1698959220
+
+TreasuryVester successfully deployed at address: 0x930d798E58089692196a8c3ecFa0d62380322Ac4
+For recipient:  0x6aE0a6E33688d0f3dCe513713e73DC7D99C1A00c
+Transfering VEX to TreasuryVester contract
+Successfully transferred VEX tokens to Vester address
+
+==============================================================================
+
+Deploying TreasuryVester with parameters:
+Recipient kenneth   0x14Fe55c8f5F83900F280a41bA6EF31042D8808D9
+Amount: 10000000000000000000000000
+Vesting Begins:  1635887240
+Vesting Cliff:  1635887240
+Vesting Ends:  1698959240
+
+TreasuryVester successfully deployed at address: 0xd8BCb5fBfc70fc981DeE098c3DaD0dC22C41dF6f
+For recipient:  0x14Fe55c8f5F83900F280a41bA6EF31042D8808D9
+Transfering VEX to TreasuryVester contract
+Successfully transferred VEX tokens to Vester address
+
+==============================================================================
+
+Deploying TreasuryVester with parameters:
+Recipient proxima   0xffF7f583Dc3a36e404A99BbacA84E867A38424e3
+Amount: 10000000000000000000000000
+Vesting Begins:  1635887260
+Vesting Cliff:  1635887260
+Vesting Ends:  1698959260
+
+TreasuryVester successfully deployed at address: 0xBaE24b616dD108311DCDcD9ec75d08c631afF76B
+For recipient:  0xffF7f583Dc3a36e404A99BbacA84E867A38424e3
+Transfering VEX to TreasuryVester contract
+Successfully transferred VEX tokens to Vester address
+Happy waiting!
