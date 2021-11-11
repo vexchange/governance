@@ -85,6 +85,7 @@ Be sure to input the VEX token address in `vesterConfig.js`
 | Timelock       | 0x41D293Ee2924FF67Bd934fC092Be408162448f86 |
 | GovernorAlpha  | 0xAE6d4be61A36984dfbE7399A73B59c92b994E9F7 |
 
+Note: GovernorAlpha is not the admin of timelock yet
 
 **Testnet**
 | Contract       | Address                             |
@@ -93,6 +94,7 @@ Be sure to input the VEX token address in `vesterConfig.js`
 | Timelock       | 0xFd883d0947848eeA79bA1425fcE38b6f00dF3ea0 |
 | GovernorAlpha  | 0x40b4F819bB35D07159AADDd415670328ecf301b5 |
 
+Note: GovernorAlpha is already the admin of timelock
 ## Attribution
 
 Forked from Uniswap governance which is a fork of compound's governance protocol
