@@ -81,9 +81,9 @@ Be sure to input the VEX token address in `vesterConfig.js`
 **Mainnet**
 | Contract       | Address                             |
 | ---            | ---                                 |
-| VEX            |                                     |
-| Timelock       |                                     |
-| GovernorAlpha  |                                     |
+| VEX            | 0x0BD802635eb9cEB3fCBe60470D2857B86841aab6 |
+| Timelock       | 0x41D293Ee2924FF67Bd934fC092Be408162448f86 |
+| GovernorAlpha  | 0xAE6d4be61A36984dfbE7399A73B59c92b994E9F7 |
 
 
 **Testnet**
