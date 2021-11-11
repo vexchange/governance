@@ -11,7 +11,7 @@ module.exports = {
         testnet: {
             name: "testnet",
             rpcUrl: "https://testnet.veblocks.net/",
-            vexAddress: ""
+            vexAddress: "0x10bf15c804AB02cEBb9E82CB61B200bba46C7CDE"
         }
     },
 	pathToTreasuryVesterJson: "../build/TreasuryVester.json",
