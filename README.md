@@ -94,7 +94,8 @@ Note: GovernorAlpha is not the admin of timelock yet
 | Timelock       | 0xFd883d0947848eeA79bA1425fcE38b6f00dF3ea0 |
 | GovernorAlpha  | 0x40b4F819bB35D07159AADDd415670328ecf301b5 |
 
-Note: GovernorAlpha is already the admin of timelock
+Note: GovernorAlpha is already the admin of timelock. Contact Alex for some testnet VEX tokens
+
 ## Attribution
 
 Forked from Uniswap governance which is a fork of compound's governance protocol
