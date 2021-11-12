@@ -1,0 +1,23 @@
+> @vexchange/governance@1.0.2 deployVester
+> node scripts/deployVester.js "mainnet"
+
+Using wallet address: 0x133720c677ac960Fd6692457233D2CeEA3754529
+Using RPC: http://mainnet02.vechain.fi.blockorder.net
+Checking if addresses are valid
+All addresses are valid
+Confirm you want to deploy this on the MAINNET? (y/n) y
+
+==============================================================================
+
+Deploying TreasuryVester with parameters:
+Recipient dao   0x41D293Ee2924FF67Bd934fC092Be408162448f86
+Amount: 49764357000000000000000000
+Vesting Begins:  1636749580
+Vesting Cliff:  1644525580
+Vesting Ends:  1699821580
+
+TreasuryVester successfully deployed at address: 0x8Fc3737CF99984961b43f86ce5C82cfaa4B49657
+For recipient:  0x41D293Ee2924FF67Bd934fC092Be408162448f86
+Transfering VEX to TreasuryVester contract
+Successfully transferred VEX tokens to Vester address
+Happy waiting!
