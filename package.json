@@ -19,7 +19,8 @@
     "queueTimelockTransfer": "node scripts/queueTimelockTransfer.js",
     "executeTimelockTransfer": "node scripts/executeTimelockTransfer.js",
     "deployVester": "node scripts/deployVester.js",
-    "claimVestedTokens": "node scripts/claimVestedTokens.js"
+    "claimVestedTokens": "node scripts/claimVestedTokens.js",
+    "setSwapFeeForPair": "node scripts/setSwapFee.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",

@@ -19,5 +19,6 @@ module.exports = {
 	pathToGovernorAlphaJson: "../build/GovernorAlpha.json",
 	pathToTimelockJson: "../build/Timelock.json",
 	pathToV2FactoryJson: "./v2json/VexchangeV2Factory.json",
+	pathToV2PairJson: "./v2json/VexchangeV2Pair.json",
 	v2FactoryAddress: "0xb312582c023cc4938cf0faea2fd609b46d7509a2" // This is the mainnet factory address
 };
