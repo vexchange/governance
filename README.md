@@ -78,7 +78,7 @@ Be sure to input the VEX token address in `vesterConfig.js`
 
 ### Setting swap fee for pair
 ```
-npm run setSwapFee.js [mainnet|testnet] [pair address] [swapFee in basis points (100 means 1%)]
+npm run setSwapFee [mainnet|testnet] [pair address] [swapFee in basis points (100 means 1%)]
 ```
 
 
