@@ -73,8 +73,14 @@ Modify recipient addresses and VEX addresses in `vesterConfig.js`.
 ```
 npm run claimVestedTokens [mainnet|testnet] [address of Vester contract]
 ```
-
 Be sure to input the VEX token address in `vesterConfig.js`
+
+
+### Setting swap fee for pair
+```
+npm run setSwapFee.js [mainnet|testnet] [pair address] [swapFee in basis points (100 means 1%)]
+```
+
 
 ### Deployed contract addresses 
 
