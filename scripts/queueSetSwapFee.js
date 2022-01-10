@@ -6,6 +6,7 @@ const Web3 = require("web3");
 const Factory = require(config.pathToV2FactoryJson);
 const Pair = require(config.pathToV2PairJson);
 const Timelock = require(config.pathToTimelockJson);
+const fs = require('fs');
 const assert = require('assert');
 const readlineSync = require("readline-sync");
 
@@ -56,6 +57,9 @@ queueSetSwapFee = async(pairAddress, newSwapFee) =>
             let input = readlineSync.question("Confirm you want to call this on the MAINNET? (y/n) ");
             if (input != 'y') process.exit(1);
         }
+
+        const blockNumber = await web3.eth.getBlockNumber();
+        const timestamp = (await web3.eth.getBlock(blockNumber)).timestamp;
 
         const value = 0;
         const signature = "setSwapFeeForPair(address,uint256)";
