@@ -23,7 +23,7 @@ Collected fees from Vexchange V2 will also be held in this smart contract.
 ### Parameters set for Vexchange
 
 - `VEX::totalSupply`: set at 100 million
-- `GovernorAlpha::quorumVotes`: set at 3% of configured total supply of VEX
+- `GovernorAlpha::quorumVotes`: set at 1% of configured total supply of VEX
 - `GovernorAlpha::proposalThreshold`: set at 0.1% of configured total supply of VEX
 - `GovernorAlpha::votingPeriod`: set at 7 days
 - `Timelock::delay`: set at 2 days
