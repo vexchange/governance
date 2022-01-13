@@ -20,7 +20,7 @@ contract GovernorAlpha {
     string public constant name = "Vexchange Governor Alpha";
 
     /// @notice The number of votes in support of a proposal required in order for a quorum to be reached and for a vote to succeed
-    function quorumVotes() public pure returns (uint) { return 3_000_000e18; } // 3% of initial supply of Vex
+    function quorumVotes() public pure returns (uint) { return 1_000_000e18; } // 1% of initial supply of Vex
 
     /// @notice The number of votes required in order for a voter to become a proposer
     function proposalThreshold() public pure returns (uint) { return 100_000e18; } // 0.1% of initial supply of Vex

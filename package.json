@@ -16,6 +16,7 @@
     "lint": "prettier ./test/**/*.ts --check",
     "prepublishOnly": "yarn test",
     "deployGovernance": "npm run compile && node scripts/deployGovernance.js",
+    "deployGovernorAlpha": "npm run compile && node scripts/deployGovernorAlpha.js",
     "queueTimelockTransfer": "node scripts/queueTimelockTransfer.js",
     "executeTimelockTransfer": "node scripts/executeTimelockTransfer.js",
     "deployVester": "node scripts/deployVester.js",
