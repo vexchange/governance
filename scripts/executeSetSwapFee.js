@@ -49,7 +49,7 @@ executeTimelockTransfer = async() =>
 
         await timelockContract.methods    
                 .executeTransaction(
-                    setSwapFeeConfig.timelockAddress, setSwapFeeConfig.value,
+                    config.v2FactoryAddress, setSwapFeeConfig.value,
                     setSwapFeeConfig.signature, setSwapFeeConfig.data, setSwapFeeConfig.eta)
                 .send({ from: walletAddress })
                 .on("receipt", (receipt) => {
