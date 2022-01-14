@@ -89,7 +89,7 @@ npm run setSwapFee [mainnet|testnet] [pair address] [swapFee in basis points (10
 | ---            | ---                                 |
 | VEX            | 0x0BD802635eb9cEB3fCBe60470D2857B86841aab6 |
 | Timelock       | 0x41D293Ee2924FF67Bd934fC092Be408162448f86 |
-| GovernorAlpha  | 0xAE6d4be61A36984dfbE7399A73B59c92b994E9F7 |
+| GovernorAlpha  | 0xa0a636893Ed688076286174Bc23b34C31BED3089 |
 
 Note: GovernorAlpha is not the admin of timelock yet
 
