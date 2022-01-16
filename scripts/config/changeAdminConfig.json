@@ -1,8 +1,8 @@
 {
   "timelockAddress": "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
-  "governorAlphaAddress": "0xAE6d4be61A36984dfbE7399A73B59c92b994E9F7",
+  "governorAlphaAddress": "0xa0a636893Ed688076286174Bc23b34C31BED3089",
   "signature": "setPendingAdmin(address)",
   "value": 0,
-  "data": "0x000000000000000000000000ae6d4be61a36984dfbe7399a73b59c92b994e9f7",
-  "eta": 1636068350
+  "data": "0x000000000000000000000000a0a636893ed688076286174bc23b34c31bed3089",
+  "eta": 1642549420
 }
