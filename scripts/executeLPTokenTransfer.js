@@ -30,6 +30,7 @@ executeTimelockTransfer = async() =>
 
     const timelockContract = new web3.eth.Contract(Timelock.abi, transferLPConfig[0].timelockAddress);
 
+    let transactionReceipt;
     for (const tx of transferLPConfig)
     {
       console.log("Attempting execution for pair", tx.pairAddress);
@@ -48,7 +49,7 @@ executeTimelockTransfer = async() =>
   }
   catch(error)
   {
-    console.log("Deployment failed with:", error)
+    console.log("Execution failed with:", error)
   }
 }
 
