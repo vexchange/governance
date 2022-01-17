@@ -22,11 +22,14 @@
     "deployVester": "node scripts/deployVester.js",
     "claimVestedTokens": "node scripts/claimVestedTokens.js",
     "queueSetSwapFee": "node scripts/queueSetSwapFee.js",
-    "executeSetSwapFee": "node scripts/executeSetSwapFee.js"
+    "executeSetSwapFee": "node scripts/executeSetSwapFee.js",
+    "queueLPTokenTransfer": "node scripts/queueLPTokenTransfer.js" ,
+    "executeLPTokenTransfer": "node scripts/executeLPTokenTransfer.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
+    "axios": "^0.24.0",
     "chai": "^4.2.0",
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.1.0",

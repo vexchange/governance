@@ -2,5 +2,6 @@
   "timelockAddress": "0x41D293Ee2924FF67Bd934fC092Be408162448f86",
   "governorAlphaAddress": "0xa0a636893Ed688076286174Bc23b34C31BED3089",
   "vexAddress": "0x0BD802635eb9cEB3fCBe60470D2857B86841aab6",
+  "feeCollectorAddress": "0x5837dbaae7a739fbc264737920512efdf00af1ef",
   "network": "mainnet"
 }
