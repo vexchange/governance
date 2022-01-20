@@ -41,7 +41,7 @@ transferVex = async(recipient) =>
     }
 
     await vexContract.methods
-          .transfer(recipient, "500000000000000000000000")
+          .transfer(recipient, "123019103928103928103948")
           .send({ from: walletAddress })
           .on("receipt", (receipt) => {
             console.log("Successfully transferred");
