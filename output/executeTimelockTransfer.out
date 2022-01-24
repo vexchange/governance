@@ -1,0 +1,17 @@
+> @vexchange/governance@1.0.2 executeTimelockTransfer
+> node scripts/executeTimelockTransfer.js "mainnet"
+
+Using wallet address: 0x133720c677ac960Fd6692457233D2CeEA3754529
+Using RPC: http://mainnet02.vechain.fi.blockorder.net
+
+==============================================================================
+
+Attempting executeTransaction on Timelock
+Confirm you want to deploy this on the MAINNET? (y/n) y
+Timelock executeTransaction was successful. Transaction hash:  0x31549a6e8356d5c521f08970c7c24a360a3d0a48b9d64bd94c40d3186a4de636
+
+==============================================================================
+
+Attemping acceptTimelockPendingAdmin on GovernorAlpha
+GovernorAlpha successfully accepted admin for Timelock
+
