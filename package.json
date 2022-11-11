@@ -24,7 +24,8 @@
     "queueSetSwapFee": "node scripts/queueSetSwapFee.js",
     "executeSetSwapFee": "node scripts/executeSetSwapFee.js",
     "queueLPTokenTransfer": "node scripts/queueLPTokenTransfer.js",
-    "executeLPTokenTransfer": "node scripts/executeLPTokenTransfer.js"
+    "executeLPTokenTransfer": "node scripts/executeLPTokenTransfer.js",
+    "unwrapWVET": "node scripts/unwrapWVET.js"
   },
   "devDependencies": {
     "@types/chai": "^4.2.12",

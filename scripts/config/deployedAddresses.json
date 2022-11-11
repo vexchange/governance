@@ -3,5 +3,6 @@
   "governorAlphaAddress": "0xa0a636893Ed688076286174Bc23b34C31BED3089",
   "vexAddress": "0x0BD802635eb9cEB3fCBe60470D2857B86841aab6",
   "feeCollectorAddress": "0x5837dbaae7a739fbc264737920512efdf00af1ef",
+  "wvetAddress": "0xd8ccdd85abdbf68dfec95f06c973e87b1b5a9997",
   "network": "mainnet"
 }
