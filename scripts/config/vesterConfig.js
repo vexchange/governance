@@ -5,11 +5,11 @@ module.exports = {
 	network: {
         mainnet: {
             name: "mainnet",
-            rpcUrl: "http://mainnet02.vechain.fi.blockorder.net",
+            rpcUrl: "https://mainnet.veblocks.net",
         },
         testnet: {
             name: "testnet",
-            rpcUrl: "http://testnet02.vechain.fi.blockorder.net",
+            rpcUrl: "https://testnet.veblocks.net",
         }
     },
 	pathToTreasuryVesterJson: "../build/TreasuryVester.json",
