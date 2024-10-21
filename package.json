@@ -25,6 +25,7 @@
     "executeSetSwapFee": "node scripts/executeSetSwapFee.js",
     "queueLPTokenTransfer": "node scripts/queueLPTokenTransfer.js",
     "executeLPTokenTransfer": "node scripts/executeLPTokenTransfer.js",
+    "recoverVTHO": "node scripts/recoverVTHO.js",
     "unwrapWVET": "node scripts/unwrapWVET.js"
   },
   "devDependencies": {
